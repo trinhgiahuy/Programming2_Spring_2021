@@ -80,10 +80,11 @@ void Account::transfer_to(Account& receiving_acc,signed int money){
   }else{
     if (abs(balance_ - money) > cre_limit_){
       std::cout<<"Cannot take money: credit limit overflow"<<std::endl;
+      std::cout<<"Transfer from "<<iban_<<" failed"<<std::endl;
     }else{
       balance_ -= money;
       receiving_acc.save_money(money);
-      std::cout<<money<<" euros taken: new balance of "<<iban_<<" is "<<balance_<<std::endl;
+      std::cout<<money<<" euros taken: new balance of "<<iban_<<" is "<<balance_<<" euros"<<std::endl;
     }
   }
 }
