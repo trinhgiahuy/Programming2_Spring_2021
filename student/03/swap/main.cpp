@@ -10,9 +10,7 @@ void swap(int& a,int& b)
     a=c;
 }
 
-
-
-
+#ifndef UNIT_TESTING
 int main()
 {
     std::cout << "Enter an integer: ";
@@ -28,3 +26,4 @@ int main()
 
     return EXIT_SUCCESS;
 }
+#endif
