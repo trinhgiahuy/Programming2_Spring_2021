@@ -8,9 +8,9 @@ void produce_random_numbers(unsigned int lower, unsigned int upper)
 {
     // Implement your function here
 std::default_random_engine rand_gen;
-    std::cout << "Enter a seed value or an empty line: ";
+    std::cout << "Enter a seed value: ";
     std::string seed_value = "";
-    getline(std::cin, seed_value);
+    std::cin >> seed_value;
     if (seed_value == "") {
         rand_gen.seed( time(NULL) );
     } else {
@@ -23,11 +23,16 @@ std::default_random_engine rand_gen;
         std::cout << "Press enter to continue or q to quit: " ;
         std::string enter_value = "";
 
-        getline(std::cin, enter_value);
-        if (enter_value != "") {
+        std::cin >> enter_value;
+        if (enter_value == "q") {
             break;
+        }else{
+            if (enter_value == "c"){
+                std::cout<<"\n";
+                continue;
+            }
         }
-        std::cout << endl;
+        //std::cout << endl;
     }
 
 }
