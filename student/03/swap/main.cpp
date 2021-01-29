@@ -6,7 +6,7 @@
 
 
 
-#ifndef UNIT_TESTING
+
 int main()
 {
     std::cout << "Enter an integer: ";
@@ -22,4 +22,3 @@ int main()
 
     return EXIT_SUCCESS;
 }
-#endif
