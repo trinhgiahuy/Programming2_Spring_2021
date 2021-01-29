@@ -20,7 +20,7 @@ std::default_random_engine rand_gen;
     while (true) {
         std::uniform_int_distribution<int> distribution(lower, upper);
         std::cout << "Your drawn random number is " << distribution(rand_gen) << std::endl;
-        std::cout << "Press enter to continue or q to quit: " ;
+        std::cout << "Press c to continue or q to quit: " ;
         std::string enter_value = "";
 
         std::cin >> enter_value;
