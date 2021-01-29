@@ -1,8 +1,14 @@
-#include "swap.hh"
 #include <cstdlib>
 #include <iostream>
 
 // Write your swap function here.
+void swap(int& a,int& b)
+{
+    int c;
+    c=b;
+    b=a;
+    a=c;
+}
 
 
 
