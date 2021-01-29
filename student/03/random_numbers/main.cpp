@@ -7,6 +7,29 @@ using namespace std;
 void produce_random_numbers(unsigned int lower, unsigned int upper)
 {
     // Implement your function here
+std::default_random_engine rand_gen;
+    std::cout << "Enter a seed value or an empty line: ";
+    std::string seed_value = "";
+    getline(std::cin, seed_value);
+    if (seed_value == "") {
+        rand_gen.seed( time(NULL) );
+    } else {
+        rand_gen.seed( stoi(seed_value) );
+    }
+    std::cout << endl;
+    while (true) {
+        std::uniform_int_distribution<int> distribution(lower, upper);
+        std::cout << "Your drawn random number is " << distribution(rand_gen) << std::endl;
+        std::cout << "Press enter to continue or q to quit: " ;
+        std::string enter_value = "";
+
+        getline(std::cin, enter_value);
+        if (enter_value != "") {
+            break;
+        }
+        std::cout << endl;
+    }
+
 }
 
 int main()
