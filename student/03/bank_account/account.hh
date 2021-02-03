@@ -13,15 +13,15 @@ public:
      void print() const;
   
   
-  void save_money(unsigned int money);
+  void save_money(signed int money);
   
   int get_balance();
 
-  void set_credit_limit(unsigned int money);
+  void set_credit_limit(signed int money);
 
-  void take_money(unsigned int money);
+  void take_money(signed int money);
 
-  void transfer_to(Account& receiving_acc, unsigned int money);
+  void transfer_to(Account& receiving_acc, signed int money);
 
 private:
     // Generates IBAN (based on running_number_ below).
@@ -40,7 +40,7 @@ private:
     std::string iban_;
 
     signed int balance_ = 0;
-    unsigned int cre_limit_;
+    signed int cre_limit_;
     bool has_credit_;
   
 };
