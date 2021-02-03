@@ -30,7 +30,7 @@ void Account::generate_iban()
 int Account::get_balance(){
   return balance_;
 }
-void Account::save_money(signed int money){
+void Account::save_money(unsigned int money){
   balance_ += money;
 }
 
@@ -39,7 +39,7 @@ void Account::print() const{
 }
 
 
-void Account::set_credit_limit(signed int money){
+void Account::set_credit_limit(unsigned int money){
   if (has_credit_){
     cre_limit_ = money;
   }else{
@@ -47,7 +47,7 @@ void Account::set_credit_limit(signed int money){
   }
 }
 
-void Account::take_money(signed int money){
+void Account::take_money(unsigned int money){
   if (!has_credit_){
     if (money >  balance_){
       std::cout<<"Cannot take money: balance underflow"<<std::endl;
@@ -66,7 +66,7 @@ void Account::take_money(signed int money){
   }
 }
 
-void Account::transfer_to(Account& receiving_acc,signed int money){
+void Account::transfer_to(Account& receiving_acc, unsigned int money){
   if (!has_credit_){
     if(money > balance_){
       std::cout<<"Cannot take money: balance underflow"<<std::endl;
