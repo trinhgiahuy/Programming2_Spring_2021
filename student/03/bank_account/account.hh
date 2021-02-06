@@ -40,7 +40,7 @@ private:
     std::string iban_;
 
     signed int balance_ = 0;
-    signed int cre_limit_;
+    signed int cre_limit_ = 0;
     bool has_credit_;
   
 };
