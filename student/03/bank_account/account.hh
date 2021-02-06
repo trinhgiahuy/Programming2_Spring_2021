@@ -36,12 +36,12 @@ private:
     static int running_number_;
 
     // More attributes/methods
-    const std::string& owner_;
-    std::string iban_;
+    const std::string& owner_ = "";
+    std::string iban_ = "";
 
     signed int balance_ = 0;
     signed int cre_limit_ = 0;
-    bool has_credit_;
+    bool has_credit_ = false;
   
 };
 
