@@ -21,7 +21,7 @@ public:
 
   void take_money(signed int money);
 
-  void transfer_to(Account receiving_acc, signed int money);
+  void transfer_to(Account& receiving_acc, signed int money);
 
 private:
     // Generates IBAN (based on running_number_ below).

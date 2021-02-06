@@ -66,7 +66,7 @@ void Account::take_money(signed int money){
   }
 }
 
-void Account::transfer_to(Account receiving_acc, signed int money){
+void Account::transfer_to(Account& receiving_acc, signed int money){
   if (!has_credit_){
     if(money > balance_){
       std::cout<<"Cannot take money: balance underflow"<<std::endl;
