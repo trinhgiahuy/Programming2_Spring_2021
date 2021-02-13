@@ -449,6 +449,111 @@ bool game_control(unsigned int x1,unsigned int y1, unsigned int x2, unsigned int
     return continue_turn;
 
 }
+
+/**
+  * @brief  A function that check whether the game is over or not
+  * @param  A game board
+  * @return true if the game is over or false otherwise
+  */
+bool Game_is_over(Game_board_type g_board)
+{
+    int rows = g_board.size();
+    int columns = g_board.at(0).size();
+    int count_emty = 0;
+
+    for (int i=0; i <rows; ++i)
+    {
+        for (int a=0; a<columns; ++a)
+        {
+            if (g_board.at(i).at(a).get_visibility() == EMPTY)
+            {
+                ++count_emty;
+            }
+        }
+    }
+
+    if (count_emty == (rows*columns))
+    {
+       return true;
+    }
+    return false;
+}
+
+
+/**
+  * @brief  A function that find the largest number of pairs
+  * that a player can have in a list of player
+  * @param  A player list
+  * @return the largest int number of pairs
+  */
+int find_largest_pairs(std::vector<Player> players_list)
+{
+    int players_list_len = players_list.size();
+    unsigned int largest_pairs = 0;
+    for (int i=0 ; i < players_list_len; ++i)
+    {
+        Player current_player = players_list.at(i);
+        if (largest_pairs == 0)
+        {
+            largest_pairs = current_player.number_of_pairs();
+        }
+        else
+        {
+            if (current_player.number_of_pairs() > largest_pairs)
+            {
+                largest_pairs = current_player.number_of_pairs();
+
+            }
+        }
+    }
+
+
+    return largest_pairs;
+
+
+}
+
+
+
+/**
+  * @brief  Determine if the game end with only 1 persion
+  * or many multi tie players
+  * @param  A player list
+  */
+void win_or_draw(std::vector<Player> players_list)
+{
+    int players_list_len = players_list.size();
+    unsigned int largest_pairs = find_largest_pairs(players_list);
+    int count_winners = 0;
+    int winner_number = 0;
+
+    for (int i = 0; i<players_list_len; ++i)
+    {
+        Player current_player = players_list.at(i);
+        if (current_player.number_of_pairs() == largest_pairs)
+        {
+            // earse set_winner and get_winner if the following line is not needed
+            //current_player.set_winner(true);
+            winner_number = i;
+            ++ count_winners;
+        }
+    }
+
+    std::cout << GAME_OVER << std::endl;
+    if (count_winners == 1)
+    {
+        std::cout << players_list.at(winner_number).get_name()
+                  << " has won with " << largest_pairs << " pairs." << std::endl;
+    }
+    else if (count_winners > 1)
+    {
+        std::cout <<"Tie of " << count_winners << " players with "
+                  << largest_pairs << " pairs." << std::endl;
+    }
+}
+
+
+
 int main()
 {
     Game_board_type game_board;
@@ -532,7 +637,18 @@ int main()
                         int y1_coord = coordinate_int.at(1);
                         int y2_coord = coordinate_int.at(3);
                         bool continue_turn = game_control(x1_coord,y1_coord,x2_coord,y2_coord,game_board,players_list,players_list.at(i));
-                   }
+
+                        if (Game_is_over(game_board))
+                        {
+                            win_or_draw(players_list);
+                            return EXIT_SUCCESS;
+                        }
+                        else if (continue_turn == false)
+                        {
+                            turn++;
+                            continue;
+                        }
+                }
               }
         }
     }
