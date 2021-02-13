@@ -54,11 +54,6 @@ const string GAME_OVER = "Game over!";
 using Game_row_type = vector<Card>;
 using Game_board_type = vector<vector<Card>>;
 
-// Muuntaa annetun numeerisen merkkijonon vastaavaksi kokonaisluvuksi
-// (kutsumalla stoi-funktiota).
-// Jos annettu merkkijono ei ole numeerinen, palauttaa nollan
-// (mikä johtaa laittomaan korttiin myöhemmin).
-//
 // Converts the given numeric string to the corresponding integer
 // (by calling stoi).
 // If the given string is not numeric, returns 0
@@ -84,8 +79,7 @@ unsigned int stoi_with_check(const string& str)
     }
 }
 
-// Täyttää pelilaudan (kooltaan rows * columns) tyhjillä korteilla.
-//
+
 // Fills the game board, the size of which is rows * columns, with empty cards.
 void init_with_empties(Game_board_type& g_board, unsigned int rows, unsigned int columns)
 {
@@ -102,10 +96,7 @@ void init_with_empties(Game_board_type& g_board, unsigned int rows, unsigned int
     }
 }
 
-// Etsii seuraavan tyhjän kohdan pelilaudalta (g_board) aloittamalla
-// annetusta kohdasta start ja jatkamalla tarvittaessa alusta.
-// (Kutsutaan vain funktiosta init_with_cards.)
-//
+
 // Finds the next free position in the game board (g_board), starting from the
 // given position start and continuing from the beginning if needed.
 // (Called only by the function init_with_cards.)
@@ -246,6 +237,46 @@ void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned in
 
 
 // More functions
+/**
+  * @brief the function split a string of input with space between them.
+  * @return the vector of string that contain seperate substring.
+  */
+std::vector<std::string> split(const std::string& s, const char delimiter, bool ignore_empty = false){
+    std::vector<std::string> result;
+    std::string tmp = s;
+
+    while(tmp.find(delimiter) != std::string::npos)
+        {
+            std::string new_part = tmp.substr(0, tmp.find(delimiter));
+            tmp = tmp.substr(tmp.find(delimiter)+1, tmp.size());
+            if(not (ignore_empty and new_part.empty()))
+                {
+                    result.push_back(new_part);
+                }
+        }
+    if(not (ignore_empty and tmp.empty()))
+         {
+             result.push_back(tmp);
+         }
+    return result;
+}
+
+/**
+  * @brief use to read player name and save to the existed list
+  * @param list of player and player name string
+  * @note Read a string of player name and push back it
+  * into a vector
+  */
+void read_players_name(vector<Player>& players_list, std::string player_names)
+{
+    std::vector<std::string> player_name_list = split(player_names,' ', true);
+    int num_player = player_name_list.size();
+    for (int i=0; i < num_player; ++i)
+    {
+        players_list.push_back(Player(player_name_list.at(i)));
+    }
+
+}
 
 
 int main()
@@ -265,7 +296,26 @@ int main()
 
 
     // More code
+    int num_players = 0;
+
+    while (num_players <= 0)
+    {
+        // read and check the amount of player
+        std::cout<< INPUT_AMOUNT_OF_PLAYERS;
+        string num_players_str = "";
+        std::getline(std::cin,num_players_str);
+        num_players = stoi_with_check(num_players_str);
+    }
+
+    // read players information
+    std::cout << "List " << num_players << " players: ";
+    std::string players_name;
+    getline(std::cin, players_name);
+    std::vector<Player> players_list;
+    read_players_name(players_list,players_name);
+
 
     return EXIT_SUCCESS;
+
 }
 
