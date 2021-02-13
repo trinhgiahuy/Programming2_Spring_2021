@@ -14,4 +14,49 @@
  *
  * */
 #include "player.hh"
+#include <iostream>
+
+
+Player::Player(const std::string& name):
+name_(name)
+{
+
+}
+// Add class implementation here.
+// It should be enough to write only 1-2 code lines in each public method.
+
+std::string Player::get_name() const
+{
+    return name_;
+}
+
+unsigned int Player::number_of_pairs() const
+{
+    return pairs_;
+}
+
+void Player::add_pair()
+{
+    pairs_ ++;
+}
+
+void Player::print() const
+{
+    std::cout <<"*** "<< name_ <<" has " << pairs_ <<" pair(s)."<< std::endl;
+}
+
+void Player::set_queu(int queu)
+{
+    queu_ = queu;
+}
+
+int Player::get_queu()
+{
+    return queu_;
+}
+
+void Player::add_card(Card &card)
+{
+    collected_cards.push_back(card);
+}
 

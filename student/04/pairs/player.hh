@@ -37,28 +37,30 @@ public:
 
     // Returns the number of pairs collected by the player so far.
     unsigned int number_of_pairs() const;
+
+    // Increase 1 pair for player if each pair is correctly guess
     void add_pair();
 
     // Moves the given card from the game board for the player,
     // i.e. inserts it to the collected cards of the player and
-    // removes it from the game board.
+    // removes it from the game board. Only one card of the pair is added
     void add_card(Card& card);
 
     // Prints the game status of the player: name and collected pairs so far.
     void print() const;
 
-
+    // Return the queue number of player. The queue number is used for to change turn
+    // of players in main function
     int get_queu();
+
+    // Set the queue number for the player
     void set_queu(int queu);
-    void set_winner(bool winner_);
-    bool get_winner();
 
 private:
     std::string name_;
     int pairs_ = 0;
     std::vector<Card> collected_cards;
     int queu_;
-    bool winner_ = false;
 };
 
 #endif // PLAYER_HH

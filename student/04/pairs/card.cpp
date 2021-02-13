@@ -47,7 +47,6 @@ Visibility_type Card::get_visibility() const
 {
     return visibility_;
 }
-
 void Card::turn()
 {
     if(visibility_ == HIDDEN)
@@ -66,8 +65,20 @@ void Card::turn()
 
 void Card::print() const
 {
-    // Kirjoita toteutus tähän
+
     // Write implementation here
+    if (visibility_ == HIDDEN)
+    {
+        std::cout << HIDDEN_CHAR;
+    }
+    else if (visibility_ == OPEN)
+    {
+        std::cout << letter_;
+    }
+    else // if(visibility_ == EMPTY)
+    {
+        std::cout << EMPTY_CHAR;
+    }
 }
 
 void Card::remove_from_game_board()
