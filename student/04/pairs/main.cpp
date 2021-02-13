@@ -1,3 +1,38 @@
+/* Pairs
+ *
+ * Desc:
+ *  This program generates a pairs (memory) game. The game has a variant
+ * number of cards and players. At the beginning, the program also asks for a
+ * seed value, since the cards will be set randomly in the game board.
+ *  On each round, the player in turn gives the coordinates of two cards
+ * (totally four numbers). After that the given cards will be turned as
+ * visible and told if they are pairs or not. If they are pairs, they are
+ * removed from the game board, the score of the player is increased, and
+ * a new turn is given for the player. If the cards are not pairs, they
+ * will be  turned hidden again, and the next player will be in turn.
+ *  The program checks if the user-given coordinates are legal. The cards
+ * determined by the coordinates must be found in the game board.
+ *  After each change, the game board is printed again. The cards are
+ * described as letters, starting from A and lasting so far as there are
+ * cards. In printing the game board, a visible card is shown as its letter,
+ * a hidden one as the number sign (#), and a removed one as a dot.
+ *  Game will end when all pairs have been found, and the game board is
+ * empty. The program tells who has/have won, i.e. collected most pairs.
+ *
+ * Program author 1
+ * Name: Trinh Gia Huy
+ * Student number: H290290
+ * UserID: bdgitr
+ * E-Mail: giahuy.trinh@tuni.fi
+ *
+ * Program author 2
+ * Name: Nguyen Nhat An
+ * Student number: 050359099
+ * UserID: kbanng
+ * E-Mail: an.nguyen@tuni.fi
+ * Notes about the program and it's implementation:
+ *
+ * */
 #include <player.hh>
 #include <card.hh>
 #include <iostream>
@@ -92,8 +127,7 @@ unsigned int next_free(Game_board_type& g_board, unsigned int start)
             return i;
         }
     }
-    // Jatketaan alusta
-    //
+
     // Continuing from the beginning
     for(unsigned int i = 0; i < start; ++i)
     {
@@ -102,45 +136,36 @@ unsigned int next_free(Game_board_type& g_board, unsigned int start)
             return i;
         }
     }
-    // Tänne ei pitäisi koskaan päätyä
-    //
+
     // You should never reach this
     std::cout << "No more empty spaces" << std::endl;
     return rows * columns - 1;
 }
 
-// Alustaa annetun pelilaudan (g_board) satunnaisesti arvotuilla korteilla
-// annetun siemenarvon (seed) perusteella.
-//
+
 // Initializes the given game board (g_board) with randomly generated cards,
 // based on the given seed value.
 void init_with_cards(Game_board_type& g_board, int seed)
 {
-    // Selvitetään annetun pelilaudan rivien ja sarakkeiden määrät
-    //
+
     // Finding out the number of rows and columns of the game board
     unsigned int rows = g_board.size();
     unsigned int columns = g_board.at(0).size();
 
-    // Arvotaan täytettävä sijainti
-    //
+
     // Drawing a cell to be filled
     std::default_random_engine randomEng(seed);
     std::uniform_int_distribution<int> distr(0, rows * columns - 1);
-    // Hylätään ensimmäinen satunnaisluku (joka on aina jakauman alaraja)
-    //
+
     // Wiping out the first random number (that is always the lower bound of the distribution)
     distr(randomEng);
 
-    // Jos arvotussa sijainnissa on jo kortti, valitaan siitä seuraava tyhjä paikka.
-    // (Seuraava tyhjä paikka haetaan kierteisesti funktion next_free avulla.)
-    //
+
     // If the drawn cell is already filled with a card, next empty cell will be used.
     // (The next empty cell is searched for circularly, see function next_free.)
     for(unsigned int i = 0, c = 'A'; i < rows * columns - 1; i += 2, ++c)
     {
-        // Lisätään kaksi samaa korttia (parit) pelilaudalle
-        //
+
         // Adding two identical cards (pairs) in the game board
         for(unsigned int j = 0; j < 2; ++j)
         {
@@ -152,10 +177,7 @@ void init_with_cards(Game_board_type& g_board, int seed)
     }
 }
 
-// Tulostaa annetusta merkistä c koostuvan rivin,
-// jonka pituus annetaan parametrissa line_length.
-// (Kutsutaan vain funktiosta print.)
-//
+
 // Prints a line consisting of the given character c.
 // The length of the line is given in the parameter line_length.
 // (Called only by the function print.)
@@ -168,13 +190,11 @@ void print_line_with_char(char c, unsigned int line_length)
     cout << endl;
 }
 
-// Tulostaa vaihtelevankokoisen pelilaudan reunuksineen.
-//
+
 // Prints a variable-length game board with borders.
 void print(const Game_board_type& g_board)
 {
-    // Selvitetään annetun pelilaudan rivien ja sarakkeiden määrät
-    //
+
     // Finding out the number of rows and columns of the game board
     unsigned int rows = g_board.size();
     unsigned int columns = g_board.at(0).size();
@@ -200,9 +220,7 @@ void print(const Game_board_type& g_board)
     print_line_with_char('=', columns);
 }
 
-// Kysyy käyttäjältä tulon ja sellaiset tulon tekijät, jotka ovat
-// mahdollisimman lähellä toisiaan.
-//
+
 // Asks the desired product from the user, and calculates the factors of
 // the product such that the factor as near to each other as possible.
 void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned int& bigger_factor)
@@ -226,7 +244,7 @@ void ask_product_and_calculate_factors(unsigned int& smaller_factor, unsigned in
     bigger_factor = product / smaller_factor;
 }
 
-// Lisää funktioita
+
 // More functions
 
 
@@ -245,7 +263,7 @@ int main()
     int seed = stoi_with_check(seed_str);
     init_with_cards(game_board, seed);
 
-    // Lisää koodia
+
     // More code
 
     return EXIT_SUCCESS;

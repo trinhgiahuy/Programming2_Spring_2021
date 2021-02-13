@@ -1,15 +1,24 @@
-/* Luokka: Card
- * ------------
- * Kuvaa yhtä korttia muistipelissä.
- *
- * COMP.CS.110 K2021
- * */
 //
 /* Class: Card
  * -----------
  * Represents a single card in pairs (memory) game.
  *
  * COMP.CS.110 K2021
+ * */
+/*
+ *  * Program author 1
+ * Name: Trinh Gia Huy
+ * Student number: H290290
+ * UserID: bdgitr
+ * E-Mail: giahuy.trinh@tuni.fi
+ *
+ * Program author 2
+ * Name: Nguyen Nhat An
+ * Student number: 050359099
+ * UserID: kbanng
+ * E-Mail: an.nguyen@tuni.fi
+ * Notes about the program and it's implementation:
+ *
  * */
 
 #ifndef CARD_HH
@@ -40,18 +49,15 @@ public:
     char get_letter() const;
     Visibility_type get_visibility() const;
 
-    // Kääntää kortin: vaihtaa näkyvyyden avoimesta piilotettuun ja päin vastoin.
-    //
+
     // Turns a card: changes the visibility from open to hidden and vice versa.
     void turn();
 
-    // Tulostaa kortin sen tämänhetkisen tilanteen (näkyvyyden) mukaisesti.
-    //
+
     // Prints a card based on its current state (visibility).
     void print() const;
 
-    // Poistaa kortin pelilaudalta: muuttaa näkyvyyden tyhjäksi.
-    //
+
     // Removes a card from the game board: changes the visibility to empty.
     void remove_from_game_board();
 

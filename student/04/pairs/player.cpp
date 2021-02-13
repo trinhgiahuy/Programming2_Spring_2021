@@ -1,7 +1,17 @@
+/*
+ *  * Program author 1
+ * Name: Trinh Gia Huy
+ * Student number: H290290
+ * UserID: bdgitr
+ * E-Mail: giahuy.trinh@tuni.fi
+ *
+ * Program author 2
+ * Name: Nguyen Nhat An
+ * Student number: 050359099
+ * UserID: kbanng
+ * E-Mail: an.nguyen@tuni.fi
+ * Notes about the program and it's implementation:
+ *
+ * */
 #include "player.hh"
 
-// Lisää luokan toteutus tähän.
-// Kuhunkin julkiseen metodiin pitäisi riittää 1-2 koodiriviä.
-
-// Add class implementation here.
-// It should be enough to write only 1-2 code lines in each public method.
