@@ -24,33 +24,41 @@
 
 #include "card.hh"
 #include <string>
+#include <vector>
 
 class Player
 {
 public:
-
     // Constructor: creates a player with the given name.
     Player(const std::string& name);
-
 
     // Returns the name of the player.
     std::string get_name() const;
 
     // Returns the number of pairs collected by the player so far.
     unsigned int number_of_pairs() const;
-
+    void add_pair();
 
     // Moves the given card from the game board for the player,
     // i.e. inserts it to the collected cards of the player and
     // removes it from the game board.
     void add_card(Card& card);
 
-
     // Prints the game status of the player: name and collected pairs so far.
     void print() const;
 
+
+    int get_queu();
+    void set_queu(int queu);
+    void set_winner(bool winner_);
+    bool get_winner();
+
 private:
-    // Add necessary attributes here
+    std::string name_;
+    int pairs_ = 0;
+    std::vector<Card> collected_cards;
+    int queu_;
+    bool winner_ = false;
 };
 
 #endif // PLAYER_HH
