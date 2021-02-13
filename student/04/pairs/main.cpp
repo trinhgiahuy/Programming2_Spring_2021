@@ -278,7 +278,116 @@ void read_players_name(vector<Player>& players_list, std::string player_names)
 
 }
 
+/**
+  * @brief use to read the given coordinate and check it validity
+  * @param Class player
+  * @return a string of input that included only given coordinate
+  * @note it also consists case of quit command
+  */
+std::string check_cordinate_input(Player player)
+{
+    std::string cordinate_str = "";
+    while (true)
+    {
+        std::cout << player.get_name()<<": "<< INPUT_CARDS ;
+        getline(std::cin, cordinate_str);
+        std::vector<std::string> cordinate_list = split(cordinate_str,' ', true);
+        int cordinate_len = cordinate_list.size();
+        for (int i = 0; i < cordinate_len; ++i)
+        {
 
+            //Check case alphabet input
+            if (stoi_with_check(cordinate_list.at(i)) == 0 and cordinate_list.at(i) != "q")
+            {
+                std::cout<< INVALID_CARD << std::endl;
+                break;
+            }
+            else
+            {
+
+                //Check quitting command
+                if (i == 0 and cordinate_list.at(i) == "q")
+                {
+                    return cordinate_str;
+                }
+                else
+                {
+                    // check valid input
+                    if (i == 3)
+                    {
+                        return cordinate_str;
+                    }
+                    continue;
+                }
+            }
+        }
+    }
+}
+
+
+/**
+  * @brief covert the string cordinate to a vector<int> of coordinates
+  * @param a string of valid coordinate
+  * @return a vector of integer coordinate
+  */
+std::vector<int> cord_str_to_int(std::string coordinate_str)
+{
+    std::vector<std::string> coordinate_list = split(coordinate_str, ' ', true);
+    std::vector<int> coordinate_int;
+    int coordinate_list_len = coordinate_list.size();
+    for (int i = 0; i < coordinate_list_len; ++ i)
+    {
+        coordinate_int.push_back(stoi_with_check(coordinate_list.at(i)));
+    }
+    return coordinate_int;
+}
+
+
+/**
+  * @brief Check the validity of given coordinates
+  * @param a vector of coordinate and a game board
+  * @return true if coordinate is valid or false otherwise
+  */
+bool check_coordinate_valid(std::vector<int>& coord_vct,Game_board_type& g_board){
+
+    int rows = g_board.size();
+    int columns = g_board.at(0).size();
+    int x1 = coord_vct.at(0);
+    int y1 = coord_vct.at(1);
+    int x2 = coord_vct.at(2);
+    int y2 = coord_vct.at(3);
+
+      // Case same coordinate input
+      if (x1 == x2 && y1 == y2){
+        std::cout<<INVALID_CARD<<std::endl;
+        return false;
+      }else{
+
+        // Case coordinate run out of border input
+        if (x1 < 1 || x1 > columns || x2 < 1 || x2 > columns || y1 < 1 || y1 > rows || y2 < 1 || y2 > rows ){
+            //std::cout<<"6_"<<std::endl;
+            std::cout<<INVALID_CARD<<std::endl;
+            return false;
+        }
+        else
+        {
+            // because row and colummn transverse to each other
+             Card Cell_1 = g_board.at(y1-1).at(x1-1);
+             Card Cell_2 = g_board.at(y2-1).at(x2-1);
+
+            // Case input coordinate = EMPTY
+            if ( Cell_1.get_visibility() == EMPTY || Cell_2.get_visibility() == EMPTY){
+                        std::cout<<INVALID_CARD<<std::endl;
+                        return false;
+             }
+             else
+             {
+                //Coordinate valid
+                    return true;
+            }
+         }
+      }
+}
 int main()
 {
     Game_board_type game_board;
@@ -314,8 +423,52 @@ int main()
     std::vector<Player> players_list;
     read_players_name(players_list,players_name);
 
+    //print the initial board
+    print(game_board);
 
+    //Set queue number for each player equal to
+    //their index in vector
+    int players_list_len = players_list.size();
+    for (int i = 0; i < players_list_len; i++){
+        players_list.at(i).set_queu(i);
+    }
+
+    int turn = 0;
+    //while loop control turn
+    while (true)
+    {
+        for (int i = 0; i < num_players; ++i)
+        {
+
+            if (turn == num_players)
+            {
+                turn = 0;
+            }
+            else
+            {
+                if (players_list.at(i).get_queu() == turn)
+                {
+                        std::vector<int> coordinate_int;
+
+                        //While loop control input
+                        while(true){
+                            std::string coordinate_str = check_cordinate_input(players_list.at(i));
+                            if (coordinate_str == "q")
+                            {
+                                std::cout<<GIVING_UP<<std::endl;
+                                return EXIT_SUCCESS;
+                            }
+                            coordinate_int = cord_str_to_int(coordinate_str);
+                            bool is_valid_card = check_coordinate_valid(coordinate_int, game_board);
+                            if (is_valid_card == true)
+                            {
+                                break;
+                            }
+                        }
+                   }
+              }
+        }
+    }
     return EXIT_SUCCESS;
-
 }
 
