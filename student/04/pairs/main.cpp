@@ -388,6 +388,67 @@ bool check_coordinate_valid(std::vector<int>& coord_vct,Game_board_type& g_board
          }
       }
 }
+
+
+/**
+  * @brief  print the players information after printing the game_board
+  * @param  A list of players
+  */
+void print_all_players_status(std::vector<Player> players_list)
+{
+    int player_list_len = players_list.size();
+
+    for (int i = 0; i < player_list_len; ++i)
+    {
+        Player current_player = players_list.at(i);
+        std::cout << "*** " << current_player.get_name() << " has " << current_player.number_of_pairs() << " pair(s)." << std::endl;
+    }
+}
+
+
+/**
+  * @brief  A function that control the game logic
+  * @param  4 coordinates, a game board, list of players and a player class
+  * @return true if player guess the pair or false if not
+  * @note the coordiate parameter is input coordinate, not the board coordinate
+  */
+bool game_control(unsigned int x1,unsigned int y1, unsigned int x2, unsigned int y2,
+                  Game_board_type& g_board, std::vector<Player>& players_list, Player& player){
+        bool continue_turn;
+
+        //Pass by reference to make a change to the board
+        //The boardcoordinate equal to input coordinate minus 1
+        // since the program value is from 0 and actual value is from 1.
+        Card& Cell1 = g_board.at(y1-1).at(x1-1);
+        Card& Cell2 = g_board.at(y2-1).at(x2-1);
+
+        //Turn card of given coordinate
+        Cell1.turn();
+        Cell2.turn();
+        print(g_board);
+
+        if (Cell1.get_letter() != Cell2.get_letter()){
+            std::cout<< NOT_FOUND<<std::endl;
+            Cell1.turn();
+            Cell2.turn();
+            print_all_players_status(players_list);
+            continue_turn = false;
+        }
+        else
+        {
+            player.add_card(Cell1);
+            player.add_pair();
+            Cell1.remove_from_game_board();
+            Cell2.remove_from_game_board();
+            std::cout<<FOUND<<std::endl;
+            print_all_players_status(players_list);
+            continue_turn = true;
+        }
+        print(g_board);
+
+    return continue_turn;
+
+}
 int main()
 {
     Game_board_type game_board;
@@ -465,6 +526,12 @@ int main()
                                 break;
                             }
                         }
+
+                        int x1_coord = coordinate_int.at(0);
+                        int x2_coord = coordinate_int.at(2);
+                        int y1_coord = coordinate_int.at(1);
+                        int y2_coord = coordinate_int.at(3);
+                        bool continue_turn = game_control(x1_coord,y1_coord,x2_coord,y2_coord,game_board,players_list,players_list.at(i));
                    }
               }
         }
