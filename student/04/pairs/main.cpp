@@ -636,7 +636,8 @@ int main()
                         int x2_coord = coordinate_int.at(2);
                         int y1_coord = coordinate_int.at(1);
                         int y2_coord = coordinate_int.at(3);
-                        bool continue_turn = game_control(x1_coord,y1_coord,x2_coord,y2_coord,game_board,players_list,players_list.at(i));
+                        bool continue_turn = game_control(x1_coord,y1_coord,x2_coord,y2_coord,game_board,
+                                                          players_list,players_list.at(i));
 
                         if (Game_is_over(game_board))
                         {
