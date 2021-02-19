@@ -4,6 +4,7 @@
 #define RECURSIVE_FUNC
 #endif
 
+using namespace std;
 bool palindrome_recursive(std::string s)
 {
   RECURSIVE_FUNC
@@ -12,6 +13,16 @@ bool palindrome_recursive(std::string s)
 
 
   // Add your implementation here
+          if (s.length() == 1 || s.length() == 0) {
+      return true;
+  } else {
+      std::string srec = s.substr(1, s.length() - 2);
+      if (s.back() == s.front() && palindrome_recursive(srec)) {
+          return true;
+      } else {
+          return false;
+      }
+  }
 }
 
 // Do not modify rest of the code, or the automated testing won't work.
