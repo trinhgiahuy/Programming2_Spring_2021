@@ -2,7 +2,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <map>
+using namespace std;
 const std::string HELP_TEXT = "S = store id1 i2\nP = print id\n"
                               "C = count id\nD = depth id\n";
 
@@ -27,11 +28,54 @@ std::vector<std::string> split(const std::string& s, const char delimiter, bool 
     return result;
 }
 
+void print_a(string name, map<string, vector<string>> network, int count) {
+    for(string i : network[name]){
+        for (int j = 0; j < count; j++) {
+            cout <<"..";
+        }
+        cout << i << endl;
 
+        if (network[i].size() > 0) {
+            int count2 = count + 1;
+            print_a(i, network, count2);
+        }
+    }
+    }
+
+
+int print_b(string name, map<string, vector<string>> network, int count) {
+    if (network[name].size() == 0) {
+        return count+0;
+    } else {
+    for(string i : network[name]){
+        count ++;
+        count = print_b(i, network, count);
+    }
+        return count;
+    }
+}
+
+int print_c(string name, map<string, vector<string>> network, int count) {
+    if (network[name].size() == 0) {
+        return count+1;
+    } else {
+        int f = 0;
+        count ++;
+        for(string i: network[name]){
+            if (print_c(i, network, count) > f) {
+                f = print_c(i ,network, count);
+            }
+        }
+        count = f;
+        return count;
+    }
+}
 
 int main()
 {
     // TODO: Implement the datastructure here
+    map<string, vector<string>> network;
+
 
 
     while(true){
@@ -51,6 +95,7 @@ int main()
             std::string id2 = parts.at(2);
 
             // TODO: Implement the command here!
+            network[id1].push_back(id2);
 
         } else if(command == "P" or command == "p"){
             if(parts.size() != 2){
@@ -60,6 +105,8 @@ int main()
             std::string id = parts.at(1);
 
             // TODO: Implement the command here!
+            cout << id << endl;
+            print_a(id, network, 1);
 
         } else if(command == "C" or command == "c"){
             if(parts.size() != 2){
@@ -70,6 +117,8 @@ int main()
 
             // TODO: Implement the command here!
 
+            cout << print_b(id, network, 0) << endl;
+
         } else if(command == "D" or command == "d"){
             if(parts.size() != 2){
                 std::cout << "Erroneous parameters!" << std::endl << HELP_TEXT;
@@ -78,6 +127,8 @@ int main()
             std::string id = parts.at(1);
 
             // TODO: Implement the command here!
+
+            cout << print_c(id, network, 0) << endl;
 
         } else if(command == "Q" or command == "q"){
            return EXIT_SUCCESS;
