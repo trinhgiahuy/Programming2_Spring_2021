@@ -31,18 +31,24 @@ public:
     void assign_staff_respon(Person* staff);
 
     //Method returning staff responsible for this care period
-    Person* return_staff_respon();
+    std::vector<Person*> return_staff_respon_vct();
 
+    void set_end_date(Date& end);
 
+    Date get_start_date();
+    Date get_end_date();
+
+    void print_staff_respon() ;
 private:
     Person* patient_;
     Date start_;
-    Date end_;
+    Date end_ ;
 
     // More attributes and methods
 
     //A staff person who is responsible for this care period
-    Person* staff_respon_;
+    std::vector<Person*> staff_respon_vct_;
+
 };
 
 #endif // CAREPERIOD_HH
