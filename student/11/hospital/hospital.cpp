@@ -90,6 +90,10 @@ void Hospital::assign_staff(Params params)
     CarePeriod* new_period = new CarePeriod(utils::today,new_patient);
     new_period->assign_staff_respon(new_staff);
 
+
+    //Assign a new care period to patient ?
+    //all_patient_care_period_.at(patient_id).push_back(new_period);
+
 }
 
 void Hospital::add_medicine(Params params)
@@ -132,11 +136,52 @@ void Hospital::remove_medicine(Params params)
 
 void Hospital::print_patient_info(Params params)
 {
+    std::string patient_id = params.at(0);
+    std::map<std::string, Person*>::const_iterator
+            patient_iter = current_patients_.find(patient_id);
+    if( patient_iter == current_patients_.end() )
+    {
+        std::cout << CANT_FIND << patient_id << std::endl;
+        return;
+    }
 
+    std::vector<CarePeriod*> temp_patient_care_period =
+             all_patient_care_period_.at(patient_id);
+
+    for(auto iter : temp_patient_care_period)
+    {
+        std::cout<<"* Care period: ";
+        iter->get_start_date().print();
+        std::cout<<"-";
+        iter->get_end_date().print();
+        std::cout<<std::endl;
+
+        std::cout<<"  - Staff: ";
+        iter->print_staff_respon();
+
+        /*
+        std::vector<Person*> temp_care_staff_vct = iter->return_staff_respon_vct();
+        for (auto it : temp_care_staff_vct){
+            if(temp_care_staff_vct.size() == 0){
+                std::cout<<"None "<<std::endl;
+                break;
+            }else{
+                it->print_id();
+                std::cout<<" ";
+            }
+        }
+        */
+
+        std::cout<<std::endl;
+    }
+
+    std::cout<<"* Medicines:"<<std::endl;
+    patient_iter->second->print_medicines(" - ");
 }
 
 void Hospital::print_care_periods_per_staff(Params params)
 {
+
 
 }
 
