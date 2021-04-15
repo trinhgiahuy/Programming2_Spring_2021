@@ -26,7 +26,11 @@ public:
     ~CarePeriod();
 
     // More public methods
+
+    //Method for assign staff to this care period
     void assign_staff_respon(Person* staff);
+
+    //Method returning staff responsible for this care period
     Person* return_staff_respon();
 
 
@@ -36,6 +40,8 @@ private:
     Date end_;
 
     // More attributes and methods
+
+    //A staff person who is responsible for this care period
     Person* staff_respon_;
 };
 
