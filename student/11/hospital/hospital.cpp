@@ -59,7 +59,9 @@ void Hospital::leave(Params params)
         std::cout<<CANT_FIND<<patient_id<<std::endl;
         return;
     }
+
     //std::map<std::string, Person*>::const_iterator patient_iter = current_patients_.find(patient_id);
+    //Remove the patient from hospital
     current_patients_.erase(patient_id);
     std::cout<< PATIENT_LEFT<< std::endl;
 }
@@ -68,6 +70,8 @@ void Hospital::assign_staff(Params params)
 {
     std::string staff_id = params.at(0);
     std::string patient_id = params.at(1);
+
+    //Handle error of cannot find staff/patient
     if(staff_.find(staff_id) == staff_.end()){
         std::cout<<CANT_FIND<<staff_id<<std::endl;
         return;
@@ -82,6 +86,7 @@ void Hospital::assign_staff(Params params)
     Person* new_patient = new Person(patient_id);
     Person* new_staff = new Person(staff_id);
 
+    //Create a care period for patient and assign staff
     CarePeriod* new_period = new CarePeriod(utils::today,new_patient);
     new_period->assign_staff_respon(new_staff);
 
