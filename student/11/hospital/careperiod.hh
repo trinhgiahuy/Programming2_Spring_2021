@@ -37,14 +37,24 @@ public:
 
     Date get_start_date();
     Date get_end_date();
+    Person* get_patient();
 
-    void print_staff_respon() ;
+    void print_staff_respon();
+
+    //Check that if care period is already closed
+    bool already_close();
+    void close_care_period(Date& closed_date);
+
+
+
+
 private:
     Person* patient_;
     Date start_;
     Date end_ ;
 
     // More attributes and methods
+    bool is_closed_ = false;
 
     //A staff person who is responsible for this care period
     std::vector<Person*> staff_respon_vct_;

@@ -54,3 +54,19 @@ void CarePeriod::print_staff_respon()
         std::cout<<" ";
     }
 }
+
+void CarePeriod::close_care_period(Date& closed_date)
+{
+    end_ = closed_date;
+    is_closed_ = true;
+}
+
+bool CarePeriod::already_close()
+{
+    return is_closed_;
+}
+
+Person* CarePeriod::get_patient()
+{
+    return patient_;
+}
