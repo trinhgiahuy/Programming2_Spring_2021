@@ -115,6 +115,7 @@ private:
     // More attributes and methods
     //std::string here is patient ID
     std::map<std::string, std::vector<CarePeriod*>> all_patient_care_period_;
+    std::map<std::string, std::vector<CarePeriod*>> all_staff_care_period_;
 };
 
 #endif // HOSPITAL_HH
