@@ -112,3 +112,17 @@ unsigned int Date::str_to_date_int(const std::string& date_part) const
     }
 }
 
+unsigned int Date::get_day()
+{
+    return day_;
+}
+
+unsigned int Date::get_month()
+{
+    return month_;
+}
+
+unsigned int Date::get_year()
+{
+    return year_;
+}

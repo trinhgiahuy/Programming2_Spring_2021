@@ -51,6 +51,8 @@ public:
     // Comparison operator, enables forming a set of Person objects.
     bool operator<(const Person& rhs) const;
 
+    //std::vector<CarePeriod*> care_period_vct_;
+
 private:
     std::string id_;     // Can be a name or any other identifier
     Date date_of_birth_; // Not actually needed
@@ -62,6 +64,8 @@ private:
     };
     // Medicine names and their prescriptions
     std::map<std::string, Prescription> medicines_;
+
+    //std::vector<CarePeriod*> return_care_period_vct();
 };
 
 #endif // PERSON_HH

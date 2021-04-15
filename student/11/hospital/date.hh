@@ -51,6 +51,10 @@ public:
     bool operator==(const Date& rhs) const;
     bool operator<(const Date& rhs) const;
 
+    unsigned int get_day();
+    unsigned int get_month();
+    unsigned int get_year();
+
 private:
     // Obvious attributes.
     unsigned int day_;
