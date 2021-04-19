@@ -351,21 +351,22 @@ void Hospital::print_care_periods_per_staff(Params params)
     std::map<std::string,std::vector<CarePeriod*>>::iterator iter =
             all_staff_care_period_.find(staff_id);
 
-    if(iter == all_staff_care_period_.end()){
+    if(iter == all_staff_care_period_.end())
+    {
         std::cout<<CANT_FIND<<staff_id<<std::endl;
         return;
     }
 
-
     std::vector<CarePeriod*> temp_staff_care_period = all_staff_care_period_.at(staff_id);
 
-
-    if(staff_.find(staff_id) == staff_.end()){
+    if(staff_.find(staff_id) == staff_.end())
+    {
         std::cout << ALREADY_EXISTS << staff_id << std::endl;
         return;
     }
 
-    if(temp_staff_care_period.empty()){
+    if(temp_staff_care_period.empty())
+    {
         std::cout<<"None"<<std::endl;
         return;
     }
@@ -375,11 +376,12 @@ void Hospital::print_care_periods_per_staff(Params params)
     {
         iter->get_start_date().print();
         std::cout<<" - ";
-        if(iter->is_closed_ret()){
+        if(iter->is_closed_ret())
+        {
             iter->get_end_date().print();
         }
-        std::cout<<std::endl;
 
+        std::cout<<std::endl;
         std::cout<<"* Patient: ";
         iter->get_patient()->print_id();
         std::cout<<std::endl;
@@ -388,8 +390,8 @@ void Hospital::print_care_periods_per_staff(Params params)
 
 
 bool Hospital::check_medicine_removed_of_patient(Person* patient_temp_,
-                                                 std::string medicine){
-
+                                                 std::string medicine)
+{
     return patient_temp_->check_medicine_removed(medicine);
 }
 
@@ -397,42 +399,48 @@ bool Hospital::check_medicine_removed_of_patient(Person* patient_temp_,
 void Hospital::print_all_medicines(Params)
 {
 
-    if(all_medicines_map.empty()){
+    if(all_medicines_map.empty())
+    {
         std::cout<<"None"<<std::endl;
         return;
     }
 
     //Print all medicines information
-    ///std::cout<<"all_medicines_map.size()"<<all_medicines_map.size();
     for (std::map<std::string,std::vector<Person*>>::iterator medicine_it_ = all_medicines_map.begin();
          medicine_it_ != all_medicines_map.end();
-         medicine_it_ ++){
+         medicine_it_ ++)
+    {
 
-        if(!medicine_it_->second.empty()){
+        if(!medicine_it_->second.empty())
+        {
             std::vector<Person*> patient_temp_vct = medicine_it_->second;
             unsigned int med_removed_num =0;
-            for(unsigned int i = 0 ; i < patient_temp_vct.size();i++){
+            for(unsigned int i = 0 ; i < patient_temp_vct.size();i++)
+            {
                 bool med_removed_ = check_medicine_removed_of_patient(patient_temp_vct.at(i),medicine_it_->first);
-                if(med_removed_){
+                if(med_removed_)
+                {
                     med_removed_num ++;
                 }
             }
 
-            if(med_removed_num != patient_temp_vct.size()){
+            if(med_removed_num != patient_temp_vct.size())
+            {
                 std::cout<<medicine_it_->first<<" prescribed for"<<std::endl;
-                ///std::cout<<"1%"<<std::endl;
-
-
                 std::vector<std::string> sorted_patient_vct;
-                for(auto patient_it_ : patient_temp_vct){
+
+                for(auto patient_it_ : patient_temp_vct)
+                {
                     //Check if that medicine is not removed yet
-                    if(!(patient_it_->check_medicine_removed(medicine_it_->first))){
+                    if(!(patient_it_->check_medicine_removed(medicine_it_->first)))
+                    {
                         sorted_patient_vct.push_back(patient_it_->get_id());
                     }
                 }
 
                 std::sort(sorted_patient_vct.begin(),sorted_patient_vct.end());
-                for(auto iter_ : sorted_patient_vct){
+                for(auto iter_ : sorted_patient_vct)
+                {
                     std::cout<<"* ";
                     all_patient_care_period_.at(iter_).at(0)->get_patient()->print_id();
                     std::cout<<std::endl;
@@ -459,29 +467,30 @@ void Hospital::print_all_staff(Params)
 }
 
 bool Hospital::check_medicines_recorded(CarePeriod *temp_patient_care_period){
-    //unsigned int med_not_record_num = 0;
-    std::vector<std::string> temp_med_vct = temp_patient_care_period->get_patient()->get_medicines();
 
-    //std::vector<std::string>::iterator it = std::find(temp_med_vct.begin(),temp_med_vct.end(),med);
-    if(temp_med_vct.empty()){
+    std::vector<std::string> temp_med_vct = temp_patient_care_period->get_patient()->get_medicines();
+    if(temp_med_vct.empty())
+    {
         return false;
-    }else{
+    }
+    else
+    {
         return true;
     }
 }
 
 void Hospital::print_all_patients(Params)
 {
-    if(all_patient_care_period_.empty()){
-
+    if(all_patient_care_period_.empty())
+    {
         std::cout<<"None"<<std::endl;
         return;
     }
 
-    for (auto patient_iter : all_patient_care_period_){
+    for (auto patient_iter : all_patient_care_period_)
+    {
 
         std::cout<<patient_iter.first<<std::endl;
-
         std::vector<CarePeriod*> temp_patient_care_period =
                 all_patient_care_period_.at(patient_iter.first);
 
@@ -497,24 +506,32 @@ void Hospital::print_all_patients(Params)
 
             std::cout<<"  - Staff: ";
             iter->print_staff_respon();
-
-
         }
+
         std::cout<<"* Medicines:";
         //Check all careperiod to find the medicines of patient
         unsigned int empty_med_num = 0;
         unsigned int index = 0;
-        for(unsigned int i = 0 ; i < temp_patient_care_period.size(); i++){
+
+        // The algorithm to find te index of newest updated care period of patient that
+        // having the medicine
+        for(unsigned int i = 0 ; i < temp_patient_care_period.size(); i++)
+        {
             bool med_record = check_medicines_recorded(temp_patient_care_period.at(i));
-            if(med_record){
-                if(index < empty_med_num){
+            if(med_record)
+            {
+                if(index < empty_med_num)
+                {
                     index = empty_med_num;
                     empty_med_num = i;
                 }
-            }else{
+            }
+            else
+            {
                 empty_med_num++;
             }
         }
+
         //At least 1 careperiod has medicine
         if ( !(empty_med_num == temp_patient_care_period.size())){
             temp_patient_care_period.at(index)->get_patient()->print_medicines(" - ");
@@ -527,13 +544,15 @@ void Hospital::print_all_patients(Params)
 
 void Hospital::print_current_patients(Params)
 {
-    if(current_patients_.empty()){
+    if(current_patients_.empty())
+    {
         std::cout<<"None"<<std::endl;
         return;
     }
 
     //At least 1 patient current in hospital
-    for (auto patient_iter : current_patients_){
+    for (auto patient_iter : current_patients_)
+    {
 
         std::vector<CarePeriod*> temp_patient_care_period =
                 all_patient_care_period_.at(patient_iter.first);
