@@ -287,6 +287,7 @@ void Hospital::add_medicine(Params params)
     }
     patient_iter->second->add_medicine(medicine, stoi(strength), stoi(dosage));
     Person* person_ptr = current_patients_.at(patient);
+    //--------------
 
     //Add medicine to all_medicine_map
     if(all_medicines_map.find(medicine) != all_medicines_map.end()){
@@ -507,6 +508,7 @@ void Hospital::print_all_staff(Params)
 void Hospital::print_all_patients(Params)
 {
     if(all_patient_care_period_.empty()){
+        std::cout<<"@"<<std::endl;
         std::cout<<"None"<<std::endl;
         return;
     }
@@ -534,7 +536,9 @@ void Hospital::print_all_patients(Params)
 
         }
         std::cout<<"* Medicines:";
-        temp_patient_care_period.at(0)->get_patient()->print_medicines(" - ");
+        //for(unsigned int i = 0 ; i < temp_patient_care_period.size(); i++){
+            temp_patient_care_period.at(0)->get_patient()->print_medicines(" - ");
+        //}
     }
 
 }
