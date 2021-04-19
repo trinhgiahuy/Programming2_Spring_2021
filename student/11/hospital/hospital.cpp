@@ -26,28 +26,6 @@ Hospital::~Hospital()
         delete iter->second;
     }
 
-    //Deallocate all data structure
-    for(auto iter_ : all_staff_care_period_){
-        std::vector<CarePeriod*> tmp_care_per_vct = iter_.second;
-        for(auto it_ : tmp_care_per_vct){
-            delete it_;
-        }
-    }
-
-    for(auto iter_ : all_patient_care_period_){
-        std::vector<CarePeriod*> tmp_care_per_vct = iter_.second;
-        for(auto it_ : tmp_care_per_vct){
-            delete it_;
-        }
-    }
-
-    for(auto iter_ : all_medicines_map){
-        std::vector<Person*> tmp_care_per_vct = iter_.second;
-        for(auto it_ : tmp_care_per_vct){
-            delete it_;
-        }
-    }
-
 }
 
 bool Hospital::exist_care_period_of_patient(std::vector<CarePeriod *> care_period_vct,
