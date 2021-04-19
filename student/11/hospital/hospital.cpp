@@ -48,6 +48,7 @@ CarePeriod* Hospital::return_care_period_of_patient(std::vector<CarePeriod *> ca
            return care_per_it;
        }
    }
+   return nullptr;
 }
 
 
