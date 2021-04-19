@@ -42,11 +42,8 @@ public:
     void print_staff_respon();
 
     //Check that if care period is already closed
-    bool already_close();
+    bool is_closed_ret();
     void close_care_period(Date& closed_date);
-
-
-
 
 private:
     Person* patient_;

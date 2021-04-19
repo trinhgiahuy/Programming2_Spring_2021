@@ -107,6 +107,16 @@ public:
     // Advances the current date with the given number of days.
     void advance_date(Params params);
 
+    bool exist_care_period_of_patient(std::vector<CarePeriod*>care_period_vct,
+                                      std::string patient);
+
+
+    CarePeriod* return_care_period_of_patient(std::vector<CarePeriod*>care_period_vct
+                                              ,std::string patient_id);
+
+    bool staff_exist_in_care_period(std::vector<CarePeriod*>care_period_vct,
+                                    std::string staff);
+
 private:
     // Obvious container attributes.
     std::map<std::string, Person*> current_patients_;
@@ -116,6 +126,9 @@ private:
     //std::string here is patient ID
     std::map<std::string, std::vector<CarePeriod*>> all_patient_care_period_;
     std::map<std::string, std::vector<CarePeriod*>> all_staff_care_period_;
+
+    //std::string here is medicine name
+    std::map<std::string,std::vector<Person*>> all_medicines_map;
 };
 
 #endif // HOSPITAL_HH

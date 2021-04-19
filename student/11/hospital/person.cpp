@@ -95,3 +95,13 @@ bool Person::operator<(const Person &rhs) const
     return id_ < rhs.id_;
 }
 
+bool Person::check_medicine_removed(std::string medicine)
+{
+    std::map<std::string, Prescription>::iterator iter = medicines_.find(medicine) ;
+    if(iter == medicines_.end()){
+        //The medicine is already removed
+        return  true;
+    }else{
+        return false;
+    }
+}

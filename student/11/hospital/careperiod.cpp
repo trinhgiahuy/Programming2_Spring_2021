@@ -18,10 +18,13 @@ CarePeriod::~CarePeriod()
 
 void CarePeriod::assign_staff_respon(Person* staff)
 {
-    staff_respon_vct_.push_back(staff);
+    if(!is_closed_){
+        staff_respon_vct_.push_back(staff);
+    }
 }
 
-std::vector<Person*> CarePeriod::return_staff_respon_vct(){
+std::vector<Person*> CarePeriod::return_staff_respon_vct()
+{
     return staff_respon_vct_;
 }
 
@@ -39,6 +42,7 @@ Date CarePeriod::get_end_date()
 {
     return end_;
 }
+
 void CarePeriod::print_staff_respon()
 {
     if( staff_respon_vct_.empty() )
@@ -46,13 +50,14 @@ void CarePeriod::print_staff_respon()
         std::cout << " None" << std::endl;
         return;
     }
-    std::cout << std::endl;
+
     std::sort(staff_respon_vct_.begin(),staff_respon_vct_.end());
     for( auto iter : staff_respon_vct_)
     {
         iter->print_id();
         std::cout<<" ";
     }
+    std::cout<<std::endl;
 }
 
 void CarePeriod::close_care_period(Date& closed_date)
@@ -61,7 +66,7 @@ void CarePeriod::close_care_period(Date& closed_date)
     is_closed_ = true;
 }
 
-bool CarePeriod::already_close()
+bool CarePeriod::is_closed_ret()
 {
     return is_closed_;
 }
