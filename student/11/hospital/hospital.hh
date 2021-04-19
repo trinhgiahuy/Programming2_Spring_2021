@@ -120,6 +120,8 @@ public:
     bool check_medicine_removed_of_patient(Person* patient_temp_,
                                          std::string medicine);
 
+    bool check_medicines_recorded(CarePeriod*temp_patient_care_period);
+
 private:
     // Obvious container attributes.
     std::map<std::string, Person*> current_patients_;

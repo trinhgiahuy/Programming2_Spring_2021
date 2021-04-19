@@ -286,12 +286,7 @@ void Hospital::add_medicine(Params params)
         return;
     }
     patient_iter->second->add_medicine(medicine, stoi(strength), stoi(dosage));
-
-
-    patient_iter->second->print_medicines(" - ");
-
     Person* person_ptr = current_patients_.at(patient);
-    //--------------
 
     //Add medicine to all_medicine_map
     if(all_medicines_map.find(medicine) != all_medicines_map.end()){
@@ -509,6 +504,18 @@ void Hospital::print_all_staff(Params)
     }
 }
 
+bool Hospital::check_medicines_recorded(CarePeriod *temp_patient_care_period){
+    //unsigned int med_not_record_num = 0;
+    std::vector<std::string> temp_med_vct = temp_patient_care_period->get_patient()->get_medicines();
+
+    //std::vector<std::string>::iterator it = std::find(temp_med_vct.begin(),temp_med_vct.end(),med);
+    if(temp_med_vct.empty()){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 void Hospital::print_all_patients(Params)
 {
     if(all_patient_care_period_.empty()){
@@ -540,9 +547,24 @@ void Hospital::print_all_patients(Params)
 
         }
         std::cout<<"* Medicines:";
-        //for(unsigned int i = 0 ; i < temp_patient_care_period.size(); i++){
-            temp_patient_care_period.at(0)->get_patient()->print_medicines(" - ");
-        //}
+        //Check all careperiod to find the medicines of patient
+        unsigned int empty_med_num = 0;
+        unsigned int index = 0;
+        for(unsigned int i = 0 ; i < temp_patient_care_period.size(); i++){
+            bool med_record = check_medicines_recorded(temp_patient_care_period.at(i));
+            if(med_record){
+                if(index < empty_med_num){
+                    index = empty_med_num;
+                    empty_med_num = i;
+                }
+            }else{
+                empty_med_num++;
+            }
+        }
+        //At least 1 careperiod has medicine
+        if ( !(empty_med_num == temp_patient_care_period.size())){
+            temp_patient_care_period.at(index)->get_patient()->print_medicines(" - ");
+        }
     }
 
 }
