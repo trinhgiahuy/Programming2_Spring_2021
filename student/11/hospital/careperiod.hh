@@ -33,19 +33,23 @@ public:
     //Method returning staff responsible for this care period
     std::vector<Person*> return_staff_respon_vct();
 
+    //Some methods related to class Date
     void set_end_date(Date& end);
-
     Date get_start_date();
     Date get_end_date();
     Person* get_patient();
 
+    //Method pritinng the staff responsible for careperiod
     void print_staff_respon();
 
-    //Check that if care period is already closed
+    //Method checking that if care period is already closed
     bool is_closed_ret();
+
+    //Method closing the care period
     void close_care_period(Date& closed_date);
 
 private:
+
     Person* patient_;
     Date start_;
     Date end_ ;

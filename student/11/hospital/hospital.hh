@@ -107,19 +107,23 @@ public:
     // Advances the current date with the given number of days.
     void advance_date(Params params);
 
+    // A method checking if a given care period belong to a given patient or not
     bool exist_care_period_of_patient(std::vector<CarePeriod*>care_period_vct,
                                       std::string patient);
 
-
+    // A method will return a care period of patient from a vector of care period
     CarePeriod* return_care_period_of_patient(std::vector<CarePeriod*>care_period_vct
                                               ,std::string patient_id);
 
+    // A method check whether a given staff already responsible for the care period or not
     bool staff_exist_in_care_period(std::vector<CarePeriod*>care_period_vct,
                                     std::string staff);
 
+    // A method check whether a given medicine has been removed from patient list or not
     bool check_medicine_removed_of_patient(Person* patient_temp_,
-                                         std::string medicine);
+                                           std::string medicine);
 
+    // A method check that whether the care period alredy record the medicine
     bool check_medicines_recorded(CarePeriod*temp_patient_care_period);
 
 private:
@@ -128,6 +132,7 @@ private:
     std::map<std::string, Person*> staff_;
 
     // More attributes and methods
+
     //std::string here is patient ID
     std::map<std::string, std::vector<CarePeriod*>> all_patient_care_period_;
     std::map<std::string, std::vector<CarePeriod*>> all_staff_care_period_;
