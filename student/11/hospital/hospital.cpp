@@ -564,6 +564,8 @@ void Hospital::print_all_patients(Params)
         //At least 1 careperiod has medicine
         if ( !(empty_med_num == temp_patient_care_period.size())){
             temp_patient_care_period.at(index)->get_patient()->print_medicines(" - ");
+        }else{
+            temp_patient_care_period.at(0)->get_patient()->print_medicines(" - ");
         }
     }
 
