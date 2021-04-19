@@ -306,6 +306,7 @@ void Hospital::add_medicine(Params params)
         temp_person_vct.push_back(person_ptr);
         all_medicines_map.insert({medicine,temp_person_vct});
     }
+    ///std::cout<<"all_medicines_map.size"<<all_medicines_map.size();
     std::cout << MEDICINE_ADDED << patient << std::endl;
 }
 
@@ -313,7 +314,7 @@ void Hospital::remove_medicine(Params params)
 {
     std::string medicine = params.at(0);
     std::string patient = params.at(1);
-    std::map<std::string, Person*>::const_iterator
+    std::map<std::string, Person*>::iterator
             patient_iter = current_patients_.find(patient);
     if( patient_iter == current_patients_.end() )
     {
@@ -327,13 +328,13 @@ void Hospital::remove_medicine(Params params)
         all_medicines_map.erase(medicine);
     }else{
         //Medicine can take more than 1 patient
-        Person* patient_ptr = current_patients_.at(patient);
+        //Person* patient_ptr = current_patients_.at(patient);
         std::vector<Person*> temp_patient_vct = all_medicines_map.at(medicine);
         for(auto it : temp_patient_vct){
-            if(it == patient_ptr){
+            if(it->get_id() == patient_iter->second->get_id()){
                 //it->~Person();
-                delete it;
-                //temp_patient_vct.erase(it);
+                it = nullptr;
+                delete  it;
             }
         }
     }*/
@@ -431,6 +432,14 @@ void Hospital::print_care_periods_per_staff(Params params)
     }
 }
 
+
+bool Hospital::check_medicine_removed_of_patient(Person* patient_temp_,
+                                               std::string medicine){
+
+    return patient_temp_->check_medicine_removed(medicine);
+}
+
+
 void Hospital::print_all_medicines(Params)
 {
 
@@ -440,29 +449,45 @@ void Hospital::print_all_medicines(Params)
     }
 
     //Print all medicines information
+    ///std::cout<<"all_medicines_map.size()"<<all_medicines_map.size();
     for (std::map<std::string,std::vector<Person*>>::iterator medicine_it_ = all_medicines_map.begin();
          medicine_it_ != all_medicines_map.end();
          medicine_it_ ++){
-        std::cout<<medicine_it_->first<<" prescribed for"<<std::endl;
-        std::vector<Person*> patient_temp_vct = medicine_it_->second;
 
-        std::vector<std::string> sorted_patient_vct;
-        for(auto patient_it_ : patient_temp_vct){
-            //Check if that medicine is not removed yet
-            if(!(patient_it_->check_medicine_removed(medicine_it_->first))){
-                sorted_patient_vct.push_back(patient_it_->get_id());
+        if(!medicine_it_->second.empty()){
+            std::vector<Person*> patient_temp_vct = medicine_it_->second;
+            unsigned int med_removed_num =0;
+            for(unsigned int i = 0 ; i < patient_temp_vct.size();i++){
+                bool med_removed_ = check_medicine_removed_of_patient(patient_temp_vct.at(i),medicine_it_->first);
+                if(med_removed_){
+                    med_removed_num ++;
+                }
             }
-        }
 
-        std::sort(sorted_patient_vct.begin(),sorted_patient_vct.end());
-        for(auto iter_ : sorted_patient_vct){
-            std::cout<<"* ";
-            all_patient_care_period_.at(iter_).at(0)->get_patient()->print_id();
-            std::cout<<std::endl;
-        }
+            if(med_removed_num != patient_temp_vct.size()){
+                    std::cout<<medicine_it_->first<<" prescribed for"<<std::endl;
+                    ///std::cout<<"1%"<<std::endl;
 
+
+                    std::vector<std::string> sorted_patient_vct;
+                    for(auto patient_it_ : patient_temp_vct){
+                        //Check if that medicine is not removed yet
+                        if(!(patient_it_->check_medicine_removed(medicine_it_->first))){
+                            sorted_patient_vct.push_back(patient_it_->get_id());
+                        }
+                    }
+
+                    std::sort(sorted_patient_vct.begin(),sorted_patient_vct.end());
+                    for(auto iter_ : sorted_patient_vct){
+                        std::cout<<"* ";
+                        all_patient_care_period_.at(iter_).at(0)->get_patient()->print_id();
+                        std::cout<<std::endl;
+                    }
+             }
+        }
     }
 }
+
 
 void Hospital::print_all_staff(Params)
 {

@@ -117,6 +117,9 @@ public:
     bool staff_exist_in_care_period(std::vector<CarePeriod*>care_period_vct,
                                     std::string staff);
 
+    bool check_medicine_removed_of_patient(Person* patient_temp_,
+                                         std::string medicine);
+
 private:
     // Obvious container attributes.
     std::map<std::string, Person*> current_patients_;
