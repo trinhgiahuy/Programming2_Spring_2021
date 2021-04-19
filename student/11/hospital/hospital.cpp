@@ -286,6 +286,10 @@ void Hospital::add_medicine(Params params)
         return;
     }
     patient_iter->second->add_medicine(medicine, stoi(strength), stoi(dosage));
+
+
+    patient_iter->second->print_medicines(" - ");
+
     Person* person_ptr = current_patients_.at(patient);
     //--------------
 
@@ -508,7 +512,7 @@ void Hospital::print_all_staff(Params)
 void Hospital::print_all_patients(Params)
 {
     if(all_patient_care_period_.empty()){
-        std::cout<<"@"<<std::endl;
+
         std::cout<<"None"<<std::endl;
         return;
     }
