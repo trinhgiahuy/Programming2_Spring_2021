@@ -47,7 +47,7 @@ void CarePeriod::print_staff_respon()
 {
     if( staff_respon_vct_.empty() )
     {
-        std::cout << " None" << std::endl;
+        std::cout << "None" << std::endl;
         return;
     }
 

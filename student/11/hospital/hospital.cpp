@@ -157,8 +157,12 @@ void Hospital::leave(Params params)
                 patient_care_per->close_care_period(utils::today);
             }
             care_per_iter->close_care_period(utils::today);
+            //std::cout<<care_per_iter->get_patient()->get_id()<<care_per_iter->is_closed_ret();
         }
     }
+
+    //std::cout<<temp_patient_care_period.size();
+    //std::cout<<all_patient_care_period_.size();
 
 
     std::cout<< PATIENT_LEFT<< std::endl;
@@ -340,9 +344,10 @@ void Hospital::remove_medicine(Params params)
 void Hospital::print_patient_info(Params params)
 {
     std::string patient_id = params.at(0);
-    std::map<std::string, Person*>::const_iterator
-            patient_iter = current_patients_.find(patient_id);
-    if( patient_iter == current_patients_.end() )
+    std::map<std::string, std::vector<CarePeriod*>>::iterator
+            patient_iter = all_patient_care_period_.find(patient_id);
+
+    if( patient_iter == all_patient_care_period_.end() )
     {
         std::cout << CANT_FIND << patient_id << std::endl;
         return;
@@ -382,7 +387,7 @@ void Hospital::print_patient_info(Params params)
 
 
     std::cout<<"* Medicines:";
-    patient_iter->second->print_medicines(" - ");
+    temp_patient_care_period.at(0)->get_patient()->print_medicines(" - ");
 }
 
 void Hospital::print_care_periods_per_staff(Params params)
