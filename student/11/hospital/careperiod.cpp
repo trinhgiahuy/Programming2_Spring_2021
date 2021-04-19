@@ -14,6 +14,10 @@ CarePeriod::CarePeriod(const Date &start, Person* patient):
 
 CarePeriod::~CarePeriod()
 {
+    //Deallocating the staff responsible
+    for(auto iter : staff_respon_vct_){
+        delete iter;
+    }
 }
 
 void CarePeriod::assign_staff_respon(Person* staff)
