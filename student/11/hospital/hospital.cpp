@@ -393,6 +393,15 @@ void Hospital::print_patient_info(Params params)
 void Hospital::print_care_periods_per_staff(Params params)
 {
     std::string staff_id = params.at(0);
+    std::map<std::string,std::vector<CarePeriod*>>::iterator iter =
+            all_staff_care_period_.find(staff_id);
+
+    if(iter == all_staff_care_period_.end()){
+        std::cout<<CANT_FIND<<staff_id<<std::endl;
+        return;
+    }
+
+
     std::vector<CarePeriod*> temp_staff_care_period = all_staff_care_period_.at(staff_id);
 
 
@@ -435,17 +444,23 @@ void Hospital::print_all_medicines(Params)
          medicine_it_ != all_medicines_map.end();
          medicine_it_ ++){
         std::cout<<medicine_it_->first<<" prescribed for"<<std::endl;
-        //std::cout<<medicine_it_->second.size()<<std::endl;
         std::vector<Person*> patient_temp_vct = medicine_it_->second;
-        std::sort(patient_temp_vct.begin(),patient_temp_vct.end());
+
+        std::vector<std::string> sorted_patient_vct;
         for(auto patient_it_ : patient_temp_vct){
             //Check if that medicine is not removed yet
             if(!(patient_it_->check_medicine_removed(medicine_it_->first))){
-                    std::cout<<"* ";
-                    patient_it_->print_id();
-                    std::cout<<std::endl;
+                sorted_patient_vct.push_back(patient_it_->get_id());
             }
-        }    
+        }
+
+        std::sort(sorted_patient_vct.begin(),sorted_patient_vct.end());
+        for(auto iter_ : sorted_patient_vct){
+            std::cout<<"* ";
+            all_patient_care_period_.at(iter_).at(0)->get_patient()->print_id();
+            std::cout<<std::endl;
+        }
+
     }
 }
 
@@ -482,7 +497,7 @@ void Hospital::print_all_patients(Params)
         {
             std::cout<<"* Care period: ";
             iter->get_start_date().print();
-            std::cout<<"-";
+            std::cout<<" - ";
             if(iter->is_closed_ret()){
                 iter->get_end_date().print();
             }
@@ -491,9 +506,10 @@ void Hospital::print_all_patients(Params)
             std::cout<<"  - Staff: ";
             iter->print_staff_respon();
 
-            std::cout<<"* Medicines:";
-            iter->get_patient()->print_medicines(" - ");
+
         }
+        std::cout<<"* Medicines:";
+        temp_patient_care_period.at(0)->get_patient()->print_medicines(" - ");
     }
 
 }
