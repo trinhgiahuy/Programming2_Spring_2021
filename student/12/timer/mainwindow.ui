@@ -73,7 +73,7 @@
      <string>Reset</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="closeButto">
+   <widget class="QPushButton" name="closeButton">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -137,7 +137,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>closeButto</sender>
+   <sender>closeButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
