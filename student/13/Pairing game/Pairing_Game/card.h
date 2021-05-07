@@ -9,7 +9,7 @@ class Card : public QPushButton
     Q_OBJECT
 
 public:
-    Card(const QString& text, QStack<Card*>* curclicked,
+    Card(const QChar& text, QStack<Card*>* curclicked,
                 QWidget* parent = 0);
     QString hiddentext;
     QStack<Card*>* curclicked;
