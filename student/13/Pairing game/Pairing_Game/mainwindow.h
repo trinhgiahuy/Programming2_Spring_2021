@@ -26,6 +26,9 @@ public:
 
 private slots:
     //void inputHandle();
+    bool isPrime(int num_in);
+
+    void checkCardInput();
 
     void updateTable();
 

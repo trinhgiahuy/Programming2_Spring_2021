@@ -17,8 +17,8 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>90</x>
+      <y>90</y>
       <width>291</width>
       <height>231</height>
      </rect>
@@ -31,8 +31,12 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="cardLineEdit"/>
+     <item row="0" column="1">
+      <widget class="QSlider" name="playerHorizontalSlider">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="playerLabel">
@@ -41,12 +45,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QSlider" name="playerHorizontalSlider">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="cardLineEdit"/>
      </item>
     </layout>
    </widget>
@@ -66,34 +66,60 @@
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>30</y>
-      <width>151</width>
+      <x>570</x>
+      <y>110</y>
+      <width>171</width>
       <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="spinBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>240</y>
-      <width>46</width>
-      <height>25</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>0</y>
+      <x>570</x>
+      <y>70</y>
       <width>131</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Players Name</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>450</y>
+      <width>511</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>420</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Card Numbers Status</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="checkPushButton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>240</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Check</string>
     </property>
    </widget>
   </widget>
@@ -112,34 +138,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>tableWidget</receiver>
-   <slot>insertRow(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>411</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>303</x>
-     <y>431</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>playerHorizontalSlider</sender>
    <signal>valueChanged(int)</signal>
    <receiver>tableWidget</receiver>
    <slot>insertRow(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>150</x>
-     <y>477</y>
+     <x>379</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel">
-     <x>339</x>
-     <y>480</y>
+     <x>610</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cardLineEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>checkPushButton</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>348</x>
+     <y>280</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>427</x>
+     <y>274</y>
     </hint>
    </hints>
   </connection>
