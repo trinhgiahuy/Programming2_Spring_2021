@@ -14,35 +14,58 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    QWidget *widget_ = new QWidget;
-    QVBoxLayout *ver_box_ = new QVBoxLayout;
-    QHBoxLayout *hor_box_ = new QHBoxLayout();
-    QPushButton *new_game_btn = new QPushButton("New Game");
-    QPushButton *quit_btn = new QPushButton("Quit");
-    QObject::connect(quit_btn,SIGNAL(clicked()), this, SLOT(quit()));
-    Timer *timer_ = new Timer();
-    Scoreboard *score_board_ = new Scoreboard(timer_->timer);
+    ui->setupUi(this);    
 
-    hor_box_->addWidget(timer_->label);
-    hor_box_->addWidget(score_board_->label);
+    ui->tableWidget->setColumnCount(1);
+    //ui->tableWidget->setRowCount(3);
 
-    QSpacerItem *spacer_item_ = new QSpacerItem(10,0,
-                                               QSizePolicy::Expanding,QSizePolicy::Expanding);
-    hor_box_->addSpacerItem(spacer_item_);
-    hor_box_->addWidget(new_game_btn);
-    hor_box_->addWidget(quit_btn);
-
-    ver_box_->addLayout(hor_box_);
-    widget_->resize(640,480);
-    widget_->setLayout(ver_box_);
-    widget_->show();
+    //auto numRow = ui->spinBox->value();
+    //connect(ui->spinBox,&QSpinBox::valueChanged,ui->tableWidget,&QTableWidget::setRowCount(numRow));
+    //ui->tableWidget->setRowCount(numRow_);
 
 
+    //connect(ui->spinBox,&QSpinBox::valueChanged,ui->tableWidget,QTableWidget::insertRow(1));
+
+
+    //connect(ui->cardLineEdit,&QLineEdit::editingFinished,this,&MainWindow::inputHandle);
+
+    connect(ui->okPushButton,&QPushButton::clicked,this,&MainWindow::finishInput);
+
+    ui->playerHorizontalSlider->setMinimum(2);
+    ui->playerHorizontalSlider->setMaximum(5);
+    connect(ui->playerHorizontalSlider,&QSlider::valueChanged,this,&MainWindow::updateTable);
+
+    //connect(ui->spinBox,&QSpinBox::valueChanged,this,&MainWindow::updateTable);
+   // connect(ui->spinBox,&QSpinBox::valueChanged,this,&MainWindow::updateTable);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+/*
+void MainWindow::inputHandle(){
+    int cardAmount_str = ui->cardLineEdit->text().toInt();
+
+}*/
+
+void MainWindow::updateTable(){
+    //ui->tableWidget->setColumnCount(2);
+    auto numRows = ui->playerHorizontalSlider->value();
+    //auto numRow = ui->spinBox->value();
+    //ui->tableWidget->setRowCount(numRowss);
+    ui->tableWidget->setRowCount(numRows);
+}
+
+void MainWindow::finishInput(){
+    card_nums_  = ui->cardLineEdit->text().toInt();
+    for(auto i = 0; i < ui->tableWidget->rowCount(); i++){
+        player_list.push_back(ui->tableWidget->itemAt(0,i)->text());
+    }
+    MainWindow::close();
+}
+
+
+
 

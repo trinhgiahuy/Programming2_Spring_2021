@@ -15,7 +15,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    //void inputHandle();
+
+    void updateTable();
+
+    void finishInput();
+
 private:
     Ui::MainWindow *ui;
+
+    std::vector<QString> player_list;
+    int card_nums_;
 };
 #endif // MAINWINDOW_H
