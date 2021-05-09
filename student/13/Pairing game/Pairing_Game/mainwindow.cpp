@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     game_turn_ = 0;
     player_turn_ = 0;
     gamePointCounter_=0;
+    player_turn_name = new QLabel();
+
     //auto numRow = ui->spinBox->value();
     //connect(ui->spinBox,&QSpinBox::valueChanged,ui->tableWidget,&QTableWidget::setRowCount(numRow));
     //ui->tableWidget->setRowCount(numRow_);
@@ -335,12 +337,6 @@ void MainWindow::checkCardInput()
     }
 }
 
-/*
-void MainWindow::inputHandle(){
-    int cardAmount_str = ui->cardLineEdit->text().toInt();
-
-}*/
-
 void MainWindow::updateTable(){
     //ui->tableWidget->setColumnCount(2);
     //ui->tableWidget->setRowCount(2);
@@ -361,14 +357,6 @@ void MainWindow::finishInput(){
 
 
     initializeGame();
-    //int turn_ = 0;
-    /*
-    for(auto i =0; i<all_score_board_vct.size();i++){
-        if(all_score_board_vct.at(i)->queue_ == turn_){
-            QObject::connect(gl,SIGNAL(gridmatch()),all_score_board_vct.at(i),SLOT(increment()));
-        }
-    }*/
-
 
     MainWindow::close();
 }
@@ -398,7 +386,6 @@ void MainWindow::initializeGame()
         all_score_board_vct.push_back(score_board_);
         hor_box_->addWidget(score_board_->player_);
         hor_box_->addWidget(score_board_->label);
-        //QObject::connect(gl,SIGNAL(gridmatch()),score_board_,SLOT(increment()));
         hor_box_->addSpacerItem(spacer_item_hor);
     }
 
@@ -407,6 +394,15 @@ void MainWindow::initializeGame()
     hor_box_->addWidget(new_game_btn);
     hor_box_->addWidget(quit_btn);
     ver_box_->addLayout(hor_box_);
+
+    QHBoxLayout* player_turn_hor_layout = new QHBoxLayout;
+    QLabel* player_turn_label = new QLabel("PLAYER TURN:");
+    QLabel* player_turn_name = new QLabel();
+    player_turn_hor_layout->addWidget(player_turn_label);
+    player_turn_hor_layout->addSpacerItem(spacer_item_hor);
+    player_turn_hor_layout->addWidget(player_turn_name);
+
+    ver_box_->addLayout(player_turn_hor_layout);
 
     Game_board_type game_board_;
     int row_pair = nearestFactorPair.first;
@@ -479,7 +475,10 @@ void MainWindow::changePlayer()
     if(player_turn_== all_score_board_vct.size()){
         player_turn_ = 0;
     }
-    qDebug() << "Call changePlayer slot turn" << player_turn_;
+    //qDebug() << "Call changePlayer slot turn" << player_turn_;
+    this->player_turn_name->setText(all_score_board_vct.at(player_turn_)->player_->text());
+    this->player_turn_name->show();
+
     this->game_turn_ = player_turn_;
 }
 

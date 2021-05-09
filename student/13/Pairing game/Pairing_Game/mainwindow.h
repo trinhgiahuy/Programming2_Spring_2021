@@ -81,6 +81,8 @@ private:
     unsigned int gamePointCounter_;
     //Grid *gl ;
 
+    QLabel* player_turn_name;
+
 signals:
 
     void changeTurnInScoreBoard(const unsigned int& game_turn_);
