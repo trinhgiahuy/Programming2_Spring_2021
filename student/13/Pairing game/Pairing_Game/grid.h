@@ -24,6 +24,8 @@ public slots:
 
 signals:
     void gridmatch();
+
+    void changeTurn();
 };
 
 

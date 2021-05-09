@@ -1,5 +1,5 @@
 #include "grid.h"
-
+#include <QDebug>
 // this is the grid that holds 30 cards
 Grid::Grid() : QGridLayout(){
     this->curclicked = new QStack<Card*>();
@@ -12,8 +12,9 @@ void Grid::check_match(){
 
     if((firstcard->hiddentext == secondcard->hiddentext) && firstcard != secondcard){
         emit gridmatch();
+        qDebug() << "Wuok jojo";
         firstcard->matched();
-        secondcard->matched();
+        secondcard->matched();        
     }
     else {
         QEventLoop loop;
@@ -21,6 +22,7 @@ void Grid::check_match(){
         loop.exec();
         firstcard->setText("?");
         secondcard->setText("?");
+        emit changeTurn();
     }
 }
 
