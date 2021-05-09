@@ -2,8 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "card.h"
+#include "grid.h"
+#include "scoreboard.h"
 
 QT_BEGIN_NAMESPACE
+using Game_row_type = std::vector<Card*>;
+using Game_board_type = std::vector<std::vector<Card*>>;
+
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
@@ -24,8 +30,21 @@ public:
 
     std::pair<int,int> nearestFactorPair;
 
+    std::vector<Scoreboard*> all_score_board_vct;
+
+
+
+
 private slots:
-    //void inputHandle();
+    //Game board operation
+    void init_with_empties(Game_board_type& g_board, unsigned int rows, unsigned int columns, Grid *gl_);
+
+    unsigned int next_free(Game_board_type& g_board, unsigned int start);
+
+    void init_with_cards(Game_board_type& g_board, int seed, Grid *gl_, int row_pair_, int col_pair_);
+
+    void add_board_to_widget(Game_board_type& g_board,Grid *gl_);
+
     bool isPrime(int num_in);
 
     void checkCardInput();
@@ -36,13 +55,31 @@ private slots:
 
     void initializeGame();
 
+    //void gameControl();
 
+    void changePlayer();
 
+    bool checkGameIsOver(int row, int col);
+
+    //void increasePointGame();
+
+    void matchGridToScoreBoard();
+
+    //void updatePlayerScore(Grid* gl_ , int turn_);
 private:
     Ui::MainWindow *ui;
 
+    unsigned int game_turn_ ;
 
+    unsigned int player_turn_ ;
 
+    bool gameOver = false;
 
+    unsigned int gamePointCounter_;
+    //Grid *gl ;
+
+signals:
+
+    void changeTurnInScoreBoard(const unsigned int& game_turn_);
 };
 #endif // MAINWINDOW_H
