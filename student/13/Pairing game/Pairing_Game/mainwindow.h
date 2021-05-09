@@ -5,6 +5,7 @@
 #include "card.h"
 #include "grid.h"
 #include "scoreboard.h"
+#include "timer.h"
 
 QT_BEGIN_NAMESPACE
 using Game_row_type = std::vector<Card*>;
@@ -32,7 +33,7 @@ public:
 
     std::vector<Scoreboard*> all_score_board_vct;
 
-
+    void checkGameIsOver(QTimer* timer);
 
 
 private slots:
@@ -59,13 +60,15 @@ private slots:
 
     void changePlayer();
 
-    bool checkGameIsOver(int row, int col);
+    void increaseTotalPoint();
 
     //void increasePointGame();
 
     void matchGridToScoreBoard();
 
     //void updatePlayerScore(Grid* gl_ , int turn_);
+
+    void stopTheGame();
 private:
     Ui::MainWindow *ui;
 
@@ -81,5 +84,7 @@ private:
 signals:
 
     void changeTurnInScoreBoard(const unsigned int& game_turn_);
+
+    void stopGame();
 };
 #endif // MAINWINDOW_H

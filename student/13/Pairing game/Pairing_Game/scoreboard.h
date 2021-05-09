@@ -3,12 +3,15 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QTimer>
+#include "timer.h"
+
 
 class Scoreboard : public QObject
 {
     Q_OBJECT
 
 public:
+
     Scoreboard(QTimer *timer, QString player_name_);
     QLabel* label;
     int counter;
@@ -18,10 +21,11 @@ public:
 
     unsigned int queue_;
 
-
     void isInturn();
 
     bool turn_;
+
+    int returnPoint();
 
 public slots:
 
@@ -33,7 +37,7 @@ signals:
 
     void changeTurn();
 
-    void increasePoint();
+    void increasePoint(QTimer* timer);
 };
 
 #endif // SCOREBOARD_H

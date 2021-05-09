@@ -21,8 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->tableWidget->setRowCount(2);
     ui->tableWidget->setColumnCount(1);
+    gameOver = false;
     game_turn_ = 0;
     player_turn_ = 0;
+    gamePointCounter_=0;
     //auto numRow = ui->spinBox->value();
     //connect(ui->spinBox,&QSpinBox::valueChanged,ui->tableWidget,&QTableWidget::setRowCount(numRow));
     //ui->tableWidget->setRowCount(numRow_);
@@ -89,6 +91,23 @@ void MainWindow::nearestFactor(int num_in)
         nearestFactorPair.second = f1_min;
     }
     //qDebug() << f1_min << f2_min;
+}
+
+void MainWindow::checkGameIsOver(QTimer* timer)
+{
+    gamePointCounter_++;
+    qDebug()<<"Increase total point"<<gamePointCounter_;
+    unsigned int rows = nearestFactorPair.first;
+    unsigned int cols = nearestFactorPair.second;
+
+    qDebug() << rows << "   " << cols;
+    if(gamePointCounter_ == rows*cols/2){
+        timer->stop();
+        qDebug()<<"Game over!";
+        emit stopGame();
+        gameOver = true;
+    }
+    gameOver = false;
 }
 
 void MainWindow::init_with_empties(Game_board_type &g_board, unsigned int rows, unsigned int columns, Grid* gl_)
@@ -342,7 +361,7 @@ void MainWindow::finishInput(){
 
 
     initializeGame();
-    int turn_ = 0;
+    //int turn_ = 0;
     /*
     for(auto i =0; i<all_score_board_vct.size();i++){
         if(all_score_board_vct.at(i)->queue_ == turn_){
@@ -444,32 +463,13 @@ void MainWindow::initializeGame()
     for(unsigned int i =0; i<all_score_board_vct.size();i++){
         QObject::connect(this,&MainWindow::changeTurnInScoreBoard,all_score_board_vct.at(i),&Scoreboard::increment);
         //QObject::connect(this,SIGNAL(changeTurnInScoreBoard(&game_turn_)),all_score_board_vct.at(i),SLOT(increment(&game_turn_)));
-        //QObject::connect(all_score_board_vct.at(i),SIGNAL(increase()),this,SLOT(checkGameIsOver()));
+
+
+        //QObject::connect(all_score_board_vct.at(i),SIGNAL(increasePoint()),this,SLOT(checkGameIsOver()));
+        QObject::connect(all_score_board_vct.at(i),&Scoreboard::increasePoint,this,&MainWindow::checkGameIsOver);
         qDebug() << "IIII" <<i;
     }
-
-    /*
-    bool gameOver = checkGameIsOver(row_pair,col_pair);
-    game_turn_ =0;
-    while (!gameOver) {
-        QObject::connect(gl,SIGNAL(changeTurn()),this,SLOT(changePlayer()));
-        //qDebug()<< "Game turn in main loop" << game_turn_;
-
-        gameOver = checkGameIsOver(row_pair,col_pair);
-    }*/
-
-
-    //updatePlayerScore(gl,game_turn_);
-
-    //changePlayer()
-    /*
-    int turn_ = 0;
-    for(unsigned int i =0; i<all_score_board_vct.size();i++){
-        if(all_score_board_vct.at(i)->queue_ == turn_){
-            QObject::connect(gl,SIGNAL(gridmatch()),all_score_board_vct.at(i),SLOT(increment()));
-        }
-    }*/
-
+    QObject::connect(this,&MainWindow::stopGame,this,&MainWindow::stopTheGame);
 
 }
 
@@ -483,12 +483,10 @@ void MainWindow::changePlayer()
     this->game_turn_ = player_turn_;
 }
 
-bool MainWindow::checkGameIsOver(int row, int col)
+void MainWindow::increaseTotalPoint()
 {
-    if(gamePointCounter_ == row*col/2){
-        return true;
-    }
-    return false;
+    gamePointCounter_++;
+    qDebug()<<"Increase total point"<<gamePointCounter_;
 }
 
 void MainWindow::matchGridToScoreBoard()
@@ -496,6 +494,38 @@ void MainWindow::matchGridToScoreBoard()
     qDebug() << "emti signal change turn in gb"<<game_turn_;
     emit changeTurnInScoreBoard(game_turn_);
 
+}
+
+void MainWindow::stopTheGame()
+{
+    qDebug() <<"Connected to stopTheGame";
+    QMessageBox *qm = new QMessageBox();
+    //qm->setText("Well done, you've matched them all!");
+
+    qm->setWindowTitle("GAME OVER!");
+    qm->setBaseSize(QSize(600,120));
+    int max_point = all_score_board_vct.at(0)->returnPoint();
+    int index =0;
+    for(unsigned int i =1; i<all_score_board_vct.size();i++){
+        if(all_score_board_vct.at(i)->returnPoint() > max_point){
+            max_point = all_score_board_vct.at(i)->returnPoint();
+            index = i;
+        }else{
+            if(all_score_board_vct.at(i)->returnPoint() == max_point){
+                index = -1;
+                break;
+            }
+        }
+    }
+    if(index == -1){
+        qm->setText("Drawing Game! Wanna new try?");
+    }else{
+        QString wining_player = all_score_board_vct.at(index)->player_->text()+" won!";
+        qm->setText(wining_player);
+    }
+    qm->setStandardButtons(QMessageBox::Close);
+    //timer.timer->stop();
+    qm->exec();
 }
 
 /*
