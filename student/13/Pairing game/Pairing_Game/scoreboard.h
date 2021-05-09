@@ -21,10 +21,6 @@ public:
 
     unsigned int queue_;
 
-    void isInturn();
-
-    bool turn_;
-
     int returnPoint();
 
 public slots:

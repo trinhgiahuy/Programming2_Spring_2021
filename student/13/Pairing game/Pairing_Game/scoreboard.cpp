@@ -7,22 +7,16 @@ Scoreboard::Scoreboard(QTimer* timer, QString player_name_) : QObject()
     this->label = new QLabel("Score: 0");
     this->counter = 0;
     this->timer = timer;
-    this->turn_ = false;
 }
 
-void Scoreboard::isInturn()
-{
-    this->turn_ = true;
-}
-
+// A operation return the point of the scoreboard
 int Scoreboard::returnPoint()
 {
     return counter;
 }
 
-// this slot increments the score by 1 when a match
-// happens, also ends the game with a win scenario
-// when the score reaches 15.
+// this slot increments the score by 1 when a queue number of scoreboard
+// match the current game turn and a pair is found
 void Scoreboard::increment(unsigned int game_turn)
 {
     if(game_turn == queue_){

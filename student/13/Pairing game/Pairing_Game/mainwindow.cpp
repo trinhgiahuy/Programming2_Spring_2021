@@ -13,7 +13,9 @@
 #include <QDebug>
 #include <random>
 
-
+/*
+A constructor for initializing the mainwindow
+*/
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -21,45 +23,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->tableWidget->setRowCount(2);
     ui->tableWidget->setColumnCount(1);
+    qDebug() << ui->tableWidget->rowCount();
     gameOver = false;
     game_turn_ = 0;
     player_turn_ = 0;
     gamePointCounter_=0;
     player_turn_name = new QLabel();
-
-    //auto numRow = ui->spinBox->value();
-    //connect(ui->spinBox,&QSpinBox::valueChanged,ui->tableWidget,&QTableWidget::setRowCount(numRow));
-    //ui->tableWidget->setRowCount(numRow_);
-
-
-    //connect(ui->spinBox,&QSpinBox::valueChanged,ui->tableWidget,QTableWidget::insertRow(1));
-
-
-    //connect(ui->cardLineEdit,&QLineEdit::editingFinished,this,&MainWindow::inputHandle);
-
-
+	
+	//Setting the horizontal bar's min and max value num of players 
     ui->playerHorizontalSlider->setMinimum(2);
-    ui->playerHorizontalSlider->setMaximum(5);
+    ui->playerHorizontalSlider->setMaximum(5);	
     connect(ui->playerHorizontalSlider,&QSlider::valueChanged,this,&MainWindow::updateTable);
     connect(ui->cardLineEdit,&QLineEdit::editingFinished,this,&MainWindow::checkCardInput);
-    ui->textBrowser->setText("Please input number of card");
+    
+	//A test browser display number of card status and disable/enable the OK push button
+	ui->textBrowser->setText("Please input number of card");
     ui->okPushButton->setDisabled(true);
-
-    /*
-    if(!ui->textBrowser->toPlainText().isEmpty()){
-        ui->okPushButton->setDisabled(true);
-        //connect(ui->textBrowser,&QTextBrowser::text)
-    }*/
-
-    /*
-    for(unsigned int i = 0; i< ui->tableWidget->rowCount(); i++){
-        player_list.push_back(ui->tableWidget->item(i,0)->text().toStdString());
-    }*/
     connect(ui->okPushButton,&QPushButton::clicked,this,&MainWindow::finishInput);
-
-
-    //connect(ui->spinBox,&QSpinBox::valueChanged,this,&MainWindow::updateTable);
-    // connect(ui->spinBox,&QSpinBox::valueChanged,this,&MainWindow::updateTable);
 
 }
 
@@ -68,6 +48,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/*
+A function that return 2 nearest factor of given input 
+*/
 void MainWindow::nearestFactor(int num_in)
 {
     int f1_min = num_in;
@@ -94,7 +77,11 @@ void MainWindow::nearestFactor(int num_in)
     }
     //qDebug() << f1_min << f2_min;
 }
-
+/**
+A functon check that if the game is over or not and 
+if it is over, it will emit the signal stopGame to 
+the mainwindow
+*/
 void MainWindow::checkGameIsOver(QTimer* timer)
 {
     gamePointCounter_++;
@@ -102,7 +89,6 @@ void MainWindow::checkGameIsOver(QTimer* timer)
     unsigned int rows = nearestFactorPair.first;
     unsigned int cols = nearestFactorPair.second;
 
-    qDebug() << rows << "   " << cols;
     if(gamePointCounter_ == rows*cols/2){
         timer->stop();
         qDebug()<<"Game over!";
@@ -112,183 +98,10 @@ void MainWindow::checkGameIsOver(QTimer* timer)
     gameOver = false;
 }
 
-void MainWindow::init_with_empties(Game_board_type &g_board, unsigned int rows, unsigned int columns, Grid* gl_)
-{
-        g_board.clear();
-       Game_row_type row;
-       for(unsigned int i = 0; i < columns; ++i)
-       {
-           Card* card = new Card('.',gl_->curclicked);
-           //Card* card = new Card('.',gl_->curclicked);
-           //Card* card = new Card('@',nullptr);
-           row.push_back(card);
-       }
-       for(unsigned int i = 0; i < rows; ++i)
-       {
-           g_board.push_back(row);
-       }
-       //qDebug() <<g_board.size()<<g_board.at(0).size();
-
-}
-
-unsigned int MainWindow::next_free(Game_board_type &g_board, unsigned int start)
-{ // Selvitetään annetun pelilaudan rivien ja sarakkeiden määrät
-    //
-    // Finding out the number of rows and columns of the game board
-    unsigned int rows = g_board.size();
-    unsigned int columns = g_board.at(0).size();
-
-    // Aloitetaan annetusta arvosta
-    //
-    // Starting from the given value
-    for(unsigned int i = start; i < rows * columns; ++i)
-    {
-        if(g_board.at(i / columns).at(i % columns)->get_visibility() == EMPTY) // vaihdettu
-        {
-            return i;
-        }
-    }
-
-    // Continuing from the beginning
-    for(unsigned int i = 0; i < start; ++i)
-    {
-        if(g_board.at(i / columns).at(i % columns)->get_visibility() == EMPTY)
-        {
-            return i;
-        }
-    }
-
-    // You should never reach this
-    std::cout << "No more empty spaces" << std::endl;
-    return rows * columns - 1;
-
-}
-
-void MainWindow::init_with_cards(Game_board_type &g_board, int seed, Grid* gl_,int row_pair_, int col_pair_)
-{
-
-       g_board.clear();
-       Game_row_type row;
-       for(int i = 0; i < col_pair_; ++i)
-       {
-           Card* card = new Card();
-           //Card* card = new Card('.',gl_->curclicked);
-           //Card* card = new Card('@',nullptr);
-           row.push_back(card);
-       }
-       for(int i = 0; i < row_pair_; ++i)
-       {
-           g_board.push_back(row);
-       }
-
-        // Finding out the number of rows and columns of the game board
-
-        //init_with_empties(g_board,row_pair_,col_pair_);
-        unsigned int rows = g_board.size();
-        unsigned int columns = g_board.at(0).size();
-
-
-        // Drawing a cell to be filled
-        std::default_random_engine randomEng(seed);
-        std::uniform_int_distribution<int> distr(0, rows * columns - 1);
-
-        // Wiping out the first random number (that is always the lower bound of the distribution)
-        distr(randomEng);
-
-
-        // If the drawn cell is already filled with a card, next empty cell will be used.
-        // (The next empty cell is searched for circularly, see function next_free.)
-        bool grid[7][7] = {false};
-        for(unsigned int i = 0, c = 'A'; i < rows * columns - 1; i += 2, ++c)
-        {
-
-            // Adding two identical cards (pairs) in the game board
-            for(unsigned int j = 0; j < 2; ++j)
-            {
-                unsigned int cell = distr(randomEng);
-                cell = next_free(g_board, cell);
-                Card* card_init = g_board.at(cell / columns).at(cell % columns);
-
-                /*
-                card_init->curclicked=gl_->curclicked;
-                card_init->hiddentext=c;(*/
-
-                card_init->setting(c,gl_->curclicked);
-
-                //Card *randButton = new Card(c,gl_->curclicked);
-                QObject::connect(card_init,SIGNAL(clicked()),
-                                 card_init,SLOT(reveal()));
-                QObject::connect(card_init,SIGNAL(checknow()),
-                                 gl_,SLOT(check_match()));
-
-                int r = std::rand()%rows;
-                int c = std::rand()%columns;
-
-                while (grid[r][c]) {
-                    r = std::rand()%rows;
-                    c = std::rand()%columns;
-                }
-                gl_->addWidget(card_init,r,c,1,1);
-                grid[r][c] = true;
-
-                //gl_->addWidget(card_init,cell/columns,cell%columns,1,1);
-            }
-        }
-}
-
-void MainWindow::add_board_to_widget(Game_board_type &g_board, Grid *gl_)
-{
-
-
-    int rows = g_board.size();
-    int cols = g_board.at(1).size();
-    //qDebug() <<rows<<"   "<<cols;
-    bool grid[23][23] = {false};
-    for(int i=0; i<rows;i++){
-        //QVBoxLayout *ver_lay = new QVBoxLayout;
-        for(int j = 0; j<cols; j++){
-            //QLayout* layout_;
-            Card* randButton = g_board.at(i).at(j);
-            /*
-            int r = std::rand()%rows;
-            int c = std::rand()%cols;
-            while (grid[r][c]) {
-                r = std::rand()%rows;
-                c = std::rand()%cols;
-            }*/
-            //layout_->addWidget(g_board.at(i).at(j));
-            //ver_lay->addWidget(g_board.at(i).at(j));
-            //g_board.at(i).at(j)->show();
-            //grid[r][c] = true;
-            //gl_->addLayout(layout_,i,j);
-            gl_->addWidget(randButton,i,j,1,1);
-            }
-
-    }
-
-    /*
-    int row = g_board.size();
-    int col = g_board.at(0).size();
-    bool grid[15][15] = {false};
-    //std::srand(time(0));
-    for(int i =0; i <row*col/2 ; i++){
-        for(int j =0; j < 2; j++){
-            Card* randButton = g_board.at(i/2).at(j);
-
-            int r = std::rand()%row;
-            int c = std::rand()%col;
-
-            while (grid[r][c]) {
-                r = std::rand()%row;
-                c = std::rand()%col;
-            }
-            gl_->addWidget(randButton,r,c,1,1);
-            grid[r][c] = true;
-        }
-    }*/
-
-}
-
+/**
+A function check return true value if the given input is a prime 
+number and false if it is not 
+*/
 bool MainWindow::isPrime(int num_in)
 {
     int chk=0;
@@ -308,6 +121,10 @@ bool MainWindow::isPrime(int num_in)
     }
 }
 
+/*
+A function that check the input number of card and output different
+statement for text browser.
+*/
 void MainWindow::checkCardInput()
 {
     int input_ = ui->cardLineEdit->text().toInt();
@@ -337,35 +154,41 @@ void MainWindow::checkCardInput()
     }
 }
 
+/*
+A slot signal that update the value of table 's rows based on the 
+value of horizontal slider bar 
+*/
 void MainWindow::updateTable(){
-    //ui->tableWidget->setColumnCount(2);
-    //ui->tableWidget->setRowCount(2);
     auto numRows = ui->playerHorizontalSlider->value();
-    //auto numRow = ui->spinBox->value();
-    //ui->tableWidget->setRowCount(numRowss);
     ui->tableWidget->setRowCount(numRows);
 }
 
+/*
+A function control the input and initialze the game until the game is finished 
+*/
 void MainWindow::finishInput(){
+
     card_nums_  = ui->cardLineEdit->text().toInt();
-    //qDebug() << ui->tableWidget->rowCount();
     for(auto i = 0; i < ui->tableWidget->rowCount(); i++){
         player_list.push_back(ui->tableWidget->item(i,0)->text());
-        //qDebug() << player_list.at(i);
     }
-    nearestFactor(card_nums_);
 
+    nearestFactor(card_nums_);
 
     initializeGame();
 
     MainWindow::close();
 }
 
-void MainWindow::initializeGame()
-{
+/*
+A function that initialize the game board and control the game logic
+*/
+void MainWindow::initializeGame(){
+	
+	
+	//Create necessary widgets for the game board
     QWidget *widget_ = new QWidget;
     QVBoxLayout *ver_box_ = new QVBoxLayout;
-
     QPushButton *new_game_btn = new QPushButton("New Game");
     QPushButton *quit_btn = new QPushButton("Quit");
     QObject::connect(quit_btn,SIGNAL(clicked()),qApp,SLOT(closed()));
@@ -377,12 +200,12 @@ void MainWindow::initializeGame()
     hor_box_->addWidget(timer_->label);
 
     Grid *gl = new Grid();
+	
+	//Create a scoreboard for each player
     for(unsigned int i =0; i< player_list.size();i++){
+
         Scoreboard *score_board_ = new Scoreboard(timer_->timer,player_list.at(i));
         score_board_->queue_ = i;
-        //qDebug() <<score_board_->queue_;
-        //Add score board to all_score_board vector
-        //QObject::connect(score_board_,SIGNAL(increasePoint()),this,SLOT(increasePointGame()));
         all_score_board_vct.push_back(score_board_);
         hor_box_->addWidget(score_board_->player_);
         hor_box_->addWidget(score_board_->label);
@@ -390,36 +213,34 @@ void MainWindow::initializeGame()
     }
 
 
-
+	//Add quit and start button
     hor_box_->addWidget(new_game_btn);
     hor_box_->addWidget(quit_btn);
     ver_box_->addLayout(hor_box_);
-
+	
+	//Add the player status layout to the game board 
     QHBoxLayout* player_turn_hor_layout = new QHBoxLayout;
     QLabel* player_turn_label = new QLabel("PLAYER TURN:");
     QLabel* player_turn_name = new QLabel();
     player_turn_hor_layout->addWidget(player_turn_label);
     player_turn_hor_layout->addSpacerItem(spacer_item_hor);
     player_turn_hor_layout->addWidget(player_turn_name);
-
     ver_box_->addLayout(player_turn_hor_layout);
-
+	
+	
+	//Get the number of row and columns from given card input 
     Game_board_type game_board_;
     int row_pair = nearestFactorPair.first;
     int col_pair = nearestFactorPair.second;
     qDebug()<<row_pair<<"   "<<col_pair;
-    //Initialize the game board
-    //bool grid[10][10];
+
 
     QObject::connect(new_game_btn, SIGNAL(clicked()), gl, SLOT(restart()));
     QObject::connect(timer_,SIGNAL(lost()),gl,SLOT(end_lost()));
     QObject::connect(quit_btn,SIGNAL(clicked()),qApp,SLOT(quit()));
-
-    //init_with_cards(game_board_,0,gl,row_pair,col_pair);
-    //add_board_to_widget(game_board_,gl);
-
-
-
+	
+	
+	//Start creating the game board grid with cards as push button 
     bool grid[20][20] = {false};
     std::srand(time(0));
     for(int i =0, c ='A'; i <row_pair*col_pair ; i+= 2, ++c){
@@ -442,7 +263,7 @@ void MainWindow::initializeGame()
         }
     }
 
-
+	// Add the grid to the gameboard
     ver_box_->addLayout(gl);
     QSpacerItem *spacer_item_ver = new QSpacerItem(0, 10,
                                                    QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -453,59 +274,70 @@ void MainWindow::initializeGame()
     widget_->setLayout(ver_box_);
     widget_->show();
 
+	//Connect the gridboard logic signal to each score board slots
     QObject::connect(gl,SIGNAL(gridmatch()),this,SLOT(matchGridToScoreBoard()));
     QObject::connect(gl,SIGNAL(changeTurn()),this,SLOT(changePlayer()));
-
     for(unsigned int i =0; i<all_score_board_vct.size();i++){
         QObject::connect(this,&MainWindow::changeTurnInScoreBoard,all_score_board_vct.at(i),&Scoreboard::increment);
-        //QObject::connect(this,SIGNAL(changeTurnInScoreBoard(&game_turn_)),all_score_board_vct.at(i),SLOT(increment(&game_turn_)));
-
-
-        //QObject::connect(all_score_board_vct.at(i),SIGNAL(increasePoint()),this,SLOT(checkGameIsOver()));
-        QObject::connect(all_score_board_vct.at(i),&Scoreboard::increasePoint,this,&MainWindow::checkGameIsOver);
-        qDebug() << "IIII" <<i;
+        QObject::connect(all_score_board_vct.at(i),&Scoreboard::increasePoint,this,&MainWindow::checkGameIsOver);     
     }
+	
+	//Connect the signal stopgGame to slot stopTheGame 
     QObject::connect(this,&MainWindow::stopGame,this,&MainWindow::stopTheGame);
 
 }
 
+/*
+A function that change the number of palyers turn if they do not match the pair and displays
+the current player turn
+*/
 void MainWindow::changePlayer()
 {
     player_turn_ ++;
     if(player_turn_== all_score_board_vct.size()){
         player_turn_ = 0;
     }
-    //qDebug() << "Call changePlayer slot turn" << player_turn_;
+
     this->player_turn_name->setText(all_score_board_vct.at(player_turn_)->player_->text());
     this->player_turn_name->show();
-
     this->game_turn_ = player_turn_;
 }
 
+/*
+A slot that increase the total point of the game board.
+*/
 void MainWindow::increaseTotalPoint()
 {
     gamePointCounter_++;
     qDebug()<<"Increase total point"<<gamePointCounter_;
 }
 
+/*
+A function that will emit the signal with current turn to all scoreboards
+*/
 void MainWindow::matchGridToScoreBoard()
 {
-    qDebug() << "emti signal change turn in gb"<<game_turn_;
     emit changeTurnInScoreBoard(game_turn_);
-
 }
 
+/*
+A slot that will receive the signal stopGame to stop the game flow 
+and display the final message box
+*/
 void MainWindow::stopTheGame()
 {
     qDebug() <<"Connected to stopTheGame";
     QMessageBox *qm = new QMessageBox();
-    //qm->setText("Well done, you've matched them all!");
 
     qm->setWindowTitle("GAME OVER!");
     qm->setBaseSize(QSize(600,120));
     int max_point = all_score_board_vct.at(0)->returnPoint();
     int index =0;
+	
+	//A loop that find the maximum number of score get from all players 
+	//and store palyer's information
     for(unsigned int i =1; i<all_score_board_vct.size();i++){
+
         if(all_score_board_vct.at(i)->returnPoint() > max_point){
             max_point = all_score_board_vct.at(i)->returnPoint();
             index = i;
@@ -516,27 +348,16 @@ void MainWindow::stopTheGame()
             }
         }
     }
+
     if(index == -1){
+		//Case 2 or more players get the same score 
         qm->setText("Drawing Game! Wanna new try?");
     }else{
+		//Display the winner player 
         QString wining_player = all_score_board_vct.at(index)->player_->text()+" won!";
         qm->setText(wining_player);
     }
+
     qm->setStandardButtons(QMessageBox::Close);
-    //timer.timer->stop();
     qm->exec();
 }
-
-/*
-void MainWindow::updatePlayerScore(Grid *gl_, int turn_)
-{
-    for(unsigned int i =0; i<all_score_board_vct.size();i++){
-        if(all_score_board_vct.at(i)->queue_ == turn_){
-            QObject::connect(gl_,SIGNAL(gridmatch()),all_score_board_vct.at(i),SLOT(increment()));
-        }
-    }
-}
-*/
-
-
-
