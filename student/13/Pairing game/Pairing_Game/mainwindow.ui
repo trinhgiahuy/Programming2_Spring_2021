@@ -138,22 +138,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>playerHorizontalSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>tableWidget</receiver>
-   <slot>insertRow(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>379</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>610</x>
-     <y>246</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>cardLineEdit</sender>
    <signal>editingFinished()</signal>
    <receiver>checkPushButton</receiver>
