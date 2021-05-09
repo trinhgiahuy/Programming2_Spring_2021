@@ -7,12 +7,6 @@ Scoreboard::Scoreboard(QTimer* timer, QString player_name_) : QObject()
     this->label = new QLabel("Score: 0");
     this->counter = 0;
     this->timer = timer;
-    this->turn_ = false;
-}
-
-void Scoreboard::isInturn()
-{
-    this->turn_ = true;
 }
 
 int Scoreboard::returnPoint()
