@@ -1,15 +1,50 @@
 #include "card.h"
 
 // these are the cards of the matching game
-Card::Card(const QChar& text, QStack<Card*>* curclicked,
-                         QWidget* parent)
-    : QPushButton(text, parent)
+Card::Card()
+    : QPushButton()
 {
-    this->curclicked = curclicked;
+   this->visibility_=EMPTY;
+}
+
+
+Card::Card(const QChar& text,QStack<Card*>* curclicked,
+                         QWidget* parent)
+    : QPushButton(text,parent)
+{
+    this->curclicked = curclicked;    
     this->setText("?");
-    this->hiddentext = text;
+    this->hiddentext=text;
     update();
 }
+
+
+
+Visibility_type Card::get_visibility()
+{
+    return visibility_;
+}
+
+void Card::setting(const QChar &text, QStack<Card*>* curclicked
+                 )
+{
+    this->hiddentext.clear();
+    //this->curclicked->empty();
+
+    this->curclicked = curclicked;
+    this->setText("?");
+    this->hiddentext =text;
+
+    //Changing this visibility raise NO_MORE_EMPTY_SPACE
+    //this->visibility_ = HIDDEN;
+    //update();
+}
+
+/*
+void Card::set_letter(const char c)
+{
+    this->hiddentext = c;
+}*/
 
 // this slot reveals the text of the card when clicked
 // if this is the first card that's been clicked, the revealed
@@ -17,9 +52,9 @@ Card::Card(const QChar& text, QStack<Card*>* curclicked,
 // both stay on for 0.5 seconds
 void Card::reveal(){
     if (curclicked->empty()) {
-    this->setText(hiddentext);
-    update();
-    curclicked->push(this);
+        this->setText(hiddentext);
+        update();
+        curclicked->push(this);
     }
     else {
         this->setText(hiddentext);
@@ -34,4 +69,5 @@ void Card::reveal(){
 void Card::matched() {
     this->setText(hiddentext);
     this->setDisabled(true);
+    this->visibility_ = EMPTY;
 }
