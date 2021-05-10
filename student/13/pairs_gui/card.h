@@ -10,8 +10,9 @@ class Card : public QPushButton
 
 public:
     Card();
+
     Card(const QChar& text, QStack<Card*>* curclicked,
-                QWidget* parent = 0);
+         QWidget* parent = 0);
     QString hiddentext;
     QStack<Card*>* curclicked;
 
@@ -19,19 +20,18 @@ public:
 
     Visibility_type get_visibility();
 
-    //void set_letter (const char c);
-
     void setting(const QChar& text, QStack<Card*>* curclicked
                  );
-    //QChar& text_ ;
 
 public slots:
+
     void reveal();
+
     void matched();
 
-    //void checkTurn();
 
 signals:
+
     void checknow();
 };
 

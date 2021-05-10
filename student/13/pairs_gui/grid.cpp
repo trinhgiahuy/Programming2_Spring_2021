@@ -12,9 +12,8 @@ void Grid::check_match(){
 
     if((firstcard->hiddentext == secondcard->hiddentext) && firstcard != secondcard){
         emit gridmatch();
-        qDebug() << "Wuok jojo";
         firstcard->matched();
-        secondcard->matched();        
+        secondcard->matched();
     }
     else {
         QEventLoop loop;

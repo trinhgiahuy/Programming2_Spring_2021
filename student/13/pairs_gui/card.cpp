@@ -4,15 +4,15 @@
 Card::Card()
     : QPushButton()
 {
-   this->visibility_=EMPTY;
+    this->visibility_=EMPTY;
 }
 
 
 Card::Card(const QChar& text,QStack<Card*>* curclicked,
-                         QWidget* parent)
+           QWidget* parent)
     : QPushButton(text,parent)
 {
-    this->curclicked = curclicked;    
+    this->curclicked = curclicked;
     this->setText("?");
     this->hiddentext=text;
     update();
@@ -26,25 +26,13 @@ Visibility_type Card::get_visibility()
 }
 
 void Card::setting(const QChar &text, QStack<Card*>* curclicked
-                 )
+                   )
 {
     this->hiddentext.clear();
-    //this->curclicked->empty();
-
     this->curclicked = curclicked;
     this->setText("?");
     this->hiddentext =text;
-
-    //Changing this visibility raise NO_MORE_EMPTY_SPACE
-    //this->visibility_ = HIDDEN;
-    //update();
 }
-
-/*
-void Card::set_letter(const char c)
-{
-    this->hiddentext = c;
-}*/
 
 // this slot reveals the text of the card when clicked
 // if this is the first card that's been clicked, the revealed

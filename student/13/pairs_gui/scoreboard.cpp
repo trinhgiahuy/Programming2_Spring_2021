@@ -21,7 +21,6 @@ void Scoreboard::increment(unsigned int game_turn)
 {
     if(game_turn == queue_){
         this->counter += 1;
-        qDebug() << "Num counter"<<counter;
         this->label->setText("Score: " + QString::number(counter));
         emit increasePoint(this->timer);
     }

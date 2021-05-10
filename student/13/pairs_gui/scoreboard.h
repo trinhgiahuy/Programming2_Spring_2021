@@ -13,8 +13,12 @@ class Scoreboard : public QObject
 public:
 
     Scoreboard(QTimer *timer, QString player_name_);
+
+    //Scoreboard data member
     QLabel* label;
+
     int counter;
+
     QTimer* timer;
 
     QLabel* player_;

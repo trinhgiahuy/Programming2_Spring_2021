@@ -29,15 +29,15 @@ MainWindow::MainWindow(QWidget *parent)
     player_turn_ = 0;
     gamePointCounter_=0;
     player_turn_name = new QLabel();
-	
-	//Setting the horizontal bar's min and max value num of players 
+
+    //Setting the horizontal bar's min and max value num of players
     ui->playerHorizontalSlider->setMinimum(2);
-    ui->playerHorizontalSlider->setMaximum(5);	
+    ui->playerHorizontalSlider->setMaximum(5);
     connect(ui->playerHorizontalSlider,&QSlider::valueChanged,this,&MainWindow::updateTable);
     connect(ui->cardLineEdit,&QLineEdit::editingFinished,this,&MainWindow::checkCardInput);
 
-	//A test browser display number of card status and disable/enable the OK push button
-	ui->textBrowser->setText("Please input number of card");
+    //A test browser display number of card status and disable/enable the OK push button
+    ui->textBrowser->setText("Please input number of card");
     ui->okPushButton->setDisabled(true);
     connect(ui->okPushButton,&QPushButton::clicked,this,&MainWindow::finishInput);
 
@@ -188,8 +188,8 @@ void MainWindow::finishInput(){
 A function that initialize the game board and control the game logic
 */
 void MainWindow::initializeGame(){
-		
-	//Create necessary widgets for the game board
+
+    //Create necessary widgets for the game board
     QWidget *widget_ = new QWidget;
     QVBoxLayout *ver_box_ = new QVBoxLayout;
     QPushButton *new_game_btn = new QPushButton("New Game");
@@ -203,8 +203,8 @@ void MainWindow::initializeGame(){
     hor_box_->addWidget(timer_->label);
 
     Grid *gl = new Grid();
-	
-	//Create a scoreboard for each player
+
+    //Create a scoreboard for each player
     for(unsigned int i =0; i< player_list.size();i++){
 
         Scoreboard *score_board_ = new Scoreboard(timer_->timer,player_list.at(i));
@@ -216,20 +216,20 @@ void MainWindow::initializeGame(){
     }
 
 
-	//Add quit and start button
+    //Add quit and start button
     hor_box_->addWidget(new_game_btn);
     hor_box_->addWidget(quit_btn);
     ver_box_->addLayout(hor_box_);
-	
-	//Add the player status layout to the game board 
+
+    //Add the player status layout to the game board
     QHBoxLayout* player_turn_hor_layout = new QHBoxLayout;
     QString textLabel = "PLAYER TURN:  " + all_score_board_vct.at(player_turn_)->player_->text();
     player_turn_name->setText(textLabel);
     player_turn_hor_layout->addWidget(player_turn_name);
     ver_box_->addLayout(player_turn_hor_layout);
-	
-	
-	//Get the number of row and columns from given card input 
+
+
+    //Get the number of row and columns from given card input
     Game_board_type game_board_;
     int row_pair = nearestFactorPair.first;
     int col_pair = nearestFactorPair.second;
@@ -238,9 +238,9 @@ void MainWindow::initializeGame(){
     QObject::connect(new_game_btn, SIGNAL(clicked()), gl, SLOT(restart()));
     QObject::connect(timer_,SIGNAL(lost()),gl,SLOT(end_lost()));
     QObject::connect(quit_btn,SIGNAL(clicked()),qApp,SLOT(quit()));
-	
-	
-	//Start creating the game board grid with cards as push button 
+
+
+    //Start creating the game board grid with cards as push button
     std::vector<QColor> color_data = {Qt::blue,Qt::yellow,Qt::red,Qt::green,Qt::gray,Qt::cyan,Qt::white,
                                       Qt::darkRed,Qt::lightGray,Qt::darkBlue,Qt::darkCyan,Qt::darkGray};
 
@@ -277,7 +277,7 @@ void MainWindow::initializeGame(){
         }
     }
 
-	// Add the grid to the gameboard
+    // Add the grid to the gameboard
     ver_box_->addLayout(gl);
     QSpacerItem *spacer_item_ver = new QSpacerItem(0, 10,
                                                    QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -288,15 +288,15 @@ void MainWindow::initializeGame(){
     widget_->setLayout(ver_box_);
     widget_->show();
 
-	//Connect the gridboard logic signal to each score board slots
+    //Connect the gridboard logic signal to each score board slots
     QObject::connect(gl,SIGNAL(gridmatch()),this,SLOT(matchGridToScoreBoard()));
     QObject::connect(gl,SIGNAL(changeTurn()),this,SLOT(changePlayer()));
     for(unsigned int i =0; i<all_score_board_vct.size();i++){
         QObject::connect(this,&MainWindow::changeTurnInScoreBoard,all_score_board_vct.at(i),&Scoreboard::increment);
-        QObject::connect(all_score_board_vct.at(i),&Scoreboard::increasePoint,this,&MainWindow::checkGameIsOver);     
+        QObject::connect(all_score_board_vct.at(i),&Scoreboard::increasePoint,this,&MainWindow::checkGameIsOver);
     }
-	
-	//Connect the signal stopgGame to slot stopTheGame 
+
+    //Connect the signal stopgGame to slot stopTheGame
     QObject::connect(this,&MainWindow::stopGame,this,&MainWindow::stopTheGame);
 
 }
@@ -345,9 +345,9 @@ void MainWindow::stopTheGame()
     qm->setBaseSize(QSize(600,120));
     int max_point = all_score_board_vct.at(0)->returnPoint();
     int index =0;
-	
-	//A loop that find the maximum number of score get from all players 
-	//and store palyer's information
+
+    //A loop that find the maximum number of score get from all players
+    //and store palyer's information
     for(unsigned int i =1; i<all_score_board_vct.size();i++){
 
         if(all_score_board_vct.at(i)->returnPoint() > max_point){
@@ -362,10 +362,10 @@ void MainWindow::stopTheGame()
     }
 
     if(index == -1){
-		//Case 2 or more players get the same score 
+        //Case 2 or more players get the same score
         qm->setText("Drawing Game! Wanna new try?");
     }else{
-		//Display the winner player 
+        //Display the winner player
         QString wining_player = all_score_board_vct.at(index)->player_->text()+" won! Score is "
                 + QString::number(max_point);
         qm->setText(wining_player);

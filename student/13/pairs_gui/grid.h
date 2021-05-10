@@ -14,15 +14,21 @@ class Grid : public QGridLayout
     Q_OBJECT
 
 public:
+
     Grid();
+
     QStack<Card*>* curclicked;
 
 public slots:
+
     void check_match();
+
     void end_lost();
+
     void restart();
 
 signals:
+
     void gridmatch();
 
     void changeTurn();

@@ -11,12 +11,17 @@ class Timer : public QObject
     Q_OBJECT
 
 public:
+
     Timer();
+
     QTimer *timer;
+
     QLabel *label;
+
     int counter;
 
 public slots:
+
     void finished();
 
 signals:
