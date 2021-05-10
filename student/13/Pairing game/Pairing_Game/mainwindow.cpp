@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->tableWidget->setRowCount(2);
     ui->tableWidget->setColumnCount(1);
+
     qDebug() << ui->tableWidget->rowCount();
     gameOver = false;
     game_turn_ = 0;
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->playerHorizontalSlider->setMaximum(5);	
     connect(ui->playerHorizontalSlider,&QSlider::valueChanged,this,&MainWindow::updateTable);
     connect(ui->cardLineEdit,&QLineEdit::editingFinished,this,&MainWindow::checkCardInput);
-    
+
 	//A test browser display number of card status and disable/enable the OK push button
 	ui->textBrowser->setText("Please input number of card");
     ui->okPushButton->setDisabled(true);
@@ -75,8 +76,9 @@ void MainWindow::nearestFactor(int num_in)
         nearestFactorPair.first = f2_min;
         nearestFactorPair.second = f1_min;
     }
-    //qDebug() << f1_min << f2_min;
 }
+
+
 /**
 A functon check that if the game is over or not and 
 if it is over, it will emit the signal stopGame to 
@@ -127,6 +129,7 @@ statement for text browser.
 */
 void MainWindow::checkCardInput()
 {
+
     int input_ = ui->cardLineEdit->text().toInt();
     if(input_ <= 0){
         ui->textBrowser->setText("Please input possitive number of cards");
@@ -170,6 +173,10 @@ void MainWindow::finishInput(){
 
     card_nums_  = ui->cardLineEdit->text().toInt();
     for(auto i = 0; i < ui->tableWidget->rowCount(); i++){
+        if(ui->tableWidget->item(i,0) == nullptr){
+            QString text = "NO NAME "+ QString::number(i+1);
+            ui->tableWidget->setItem(i, 0, new QTableWidgetItem(text));
+        }
         player_list.push_back(ui->tableWidget->item(i,0)->text());
     }
 
@@ -184,8 +191,7 @@ void MainWindow::finishInput(){
 A function that initialize the game board and control the game logic
 */
 void MainWindow::initializeGame(){
-	
-	
+		
 	//Create necessary widgets for the game board
     QWidget *widget_ = new QWidget;
     QVBoxLayout *ver_box_ = new QVBoxLayout;

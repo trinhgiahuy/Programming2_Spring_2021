@@ -6,6 +6,7 @@
 #include "grid.h"
 #include "scoreboard.h"
 #include "timer.h"
+#include <QTableWidget>
 
 QT_BEGIN_NAMESPACE
 using Game_row_type = std::vector<Card*>;
