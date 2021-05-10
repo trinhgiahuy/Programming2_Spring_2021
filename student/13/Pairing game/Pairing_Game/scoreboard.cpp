@@ -23,7 +23,6 @@ void Scoreboard::increment(unsigned int game_turn)
         this->counter += 1;
         qDebug() << "Num counter"<<counter;
         this->label->setText("Score: " + QString::number(counter));
-
         emit increasePoint(this->timer);
     }
 }

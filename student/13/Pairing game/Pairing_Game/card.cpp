@@ -68,6 +68,7 @@ void Card::reveal(){
 // stays permanently on
 void Card::matched() {
     this->setText(hiddentext);
+    this->hide();
     this->setDisabled(true);
     this->visibility_ = EMPTY;
 }

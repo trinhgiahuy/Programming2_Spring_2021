@@ -247,11 +247,18 @@ void MainWindow::initializeGame(){
 	
 	
 	//Start creating the game board grid with cards as push button 
+    std::vector<QColor> color_data = {Qt::blue,Qt::yellow,Qt::red,Qt::green,Qt::gray,Qt::cyan,Qt::white,
+                                      Qt::darkRed,Qt::lightGray,Qt::darkBlue,Qt::darkCyan,Qt::darkGray};
     bool grid[20][20] = {false};
     std::srand(time(0));
     for(int i =0, c ='A'; i <row_pair*col_pair ; i+= 2, ++c){
         for(int j =0; j < 2; j++){
             Card *randButton = new Card(c,gl->curclicked);
+            QPalette pal = randButton->palette();
+            pal.setColor(QPalette::Button,QColor(color_data.at(std::rand()%color_data.size())));
+            randButton->setAutoFillBackground(true);
+            randButton->setPalette(pal);
+            randButton->update();
             QObject::connect(randButton,SIGNAL(clicked()),
                              randButton,SLOT(reveal()));
             QObject::connect(randButton,SIGNAL(checknow()),
@@ -360,7 +367,8 @@ void MainWindow::stopTheGame()
         qm->setText("Drawing Game! Wanna new try?");
     }else{
 		//Display the winner player 
-        QString wining_player = all_score_board_vct.at(index)->player_->text()+" won!";
+        QString wining_player = all_score_board_vct.at(index)->player_->text()+" won! Score is "
+                + QString::number(max_point);
         qm->setText(wining_player);
     }
 
