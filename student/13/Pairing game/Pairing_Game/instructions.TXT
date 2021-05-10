@@ -19,7 +19,8 @@ be even,not prime,possitive,...)
 
 ***Game instruction:
 Players start choose the number of player using a slide bar and fill in the table each players'
-name. The player number must be minimum of 2 and maximum of 5.Next players input their number of
+name. If the no players' name are givem, it will assign default name with order of player.
+The player number must be minimum of 2 and maximum of 5.Next players input their number of
 cards. It cannot exceed 52 since the alphabetic only contain 26.Next, choose Ok to start the game.
 The game turn start from the first person and go through all player in order of input. If he/she
 found the match pairs, he/she continue to play. Otherwise, turn is changed to next player.
