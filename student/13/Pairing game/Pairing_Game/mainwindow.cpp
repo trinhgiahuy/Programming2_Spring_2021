@@ -249,7 +249,14 @@ void MainWindow::initializeGame(){
 	//Start creating the game board grid with cards as push button 
     std::vector<QColor> color_data = {Qt::blue,Qt::yellow,Qt::red,Qt::green,Qt::gray,Qt::cyan,Qt::white,
                                       Qt::darkRed,Qt::lightGray,Qt::darkBlue,Qt::darkCyan,Qt::darkGray};
-    bool grid[20][20] = {false};
+
+    bool grid[20][20] = {};
+    for(unsigned int i = 0 ; i < 20 ; i++){
+        for(unsigned int j = 0 ; j < 20 ; j++){
+            grid[i][j] = false;
+        }
+    }
+
     std::srand(time(0));
     for(int i =0, c ='A'; i <row_pair*col_pair ; i+= 2, ++c){
         for(int j =0; j < 2; j++){
